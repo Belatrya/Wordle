@@ -3,17 +3,17 @@ package base;
 import io.UserInterface;
 
 public class Game {
-
-    public void startGame() {
-        UserInterface.greetingUser();
+    private UserInterface userInterface;
+    public Game() {
+        userInterface = new UserInterface();
     }
-
+    public void startGame() {
+        userInterface.greetingUser();
+    }
     public void playRound() {
         String userWord = getUserWord();
     }
-
     private String getUserWord() {
-        return UserInterface.getUserWord();
+        return userInterface.getUserWord();
     }
-
 }
