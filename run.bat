@@ -1,4 +1,4 @@
 @echo off
-javac -d out/production/Wordle -sourcepath src src/base/Game.java
-java -cp out/production/Wordle base.Game
+javac -d out/production/Wordle -sourcepath src src/base/Main.java
+java -cp out/production/Wordle base.Main
 pause 
