@@ -1,4 +1,4 @@
-package io;
+package main.java.userinterface;
 import java.util.Scanner;
 public class UserInterface {
     private static final String GREETING_USER = "Welcome to the game Wordle!";
