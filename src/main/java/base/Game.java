@@ -1,6 +1,6 @@
 package main.java.base;
 
-import main.java.userinterface.UserInterface;
+import main.java.view.UserInterface;
 
 public class Game {
     private UserInterface userInterface;
