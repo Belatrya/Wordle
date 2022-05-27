@@ -10,7 +10,7 @@ public class UserInterface {
         System.out.println(phrase);
     }
     public String getUserWord() {
-        String userWord = "";
+        String userWord;
         talkWithUser(ASK_TO_TYPE_WORD);
 
         try (Scanner scanner = new Scanner(System.in)) {
