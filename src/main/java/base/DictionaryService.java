@@ -1,11 +1,11 @@
-package main.java.base;
+package base;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Scanner;
 
 public class DictionaryService {
-    private static final String DICTIONARY_PATH = "src\\main\\java\\base\\dictionary\\russian5letterwords.txt";
+    private static final String DICTIONARY_PATH = "src\\main\\resources\\dictionary\\russian5letterwords.txt";
 
     private Path dictionaryPath;
     private int wordsCount;
