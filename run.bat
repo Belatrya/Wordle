@@ -5,6 +5,4 @@ md .\out\resources
 copy .\src\main\resources\dictionary\russian5letterwords.txt .\out\resources >NUL
 
 java -cp .\out\production\Wordle Main
-
-
 pause
