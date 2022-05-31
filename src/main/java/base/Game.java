@@ -1,6 +1,6 @@
-package main.java.base;
+package base;
 
-import main.java.view.UserInterface;
+import view.UserInterface;
 
 /**
  * Represents the game process.
