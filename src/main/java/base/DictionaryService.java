@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 public class DictionaryService {
-    private static final String DICTIONARY_PATH = "src\\main\\resources\\dictionary\\russian5letterwords.txt";
+    private static final String DICTIONARY_PATH = "out\\resources\\dictionary\\russian5letterwords.txt";
 
     private Path dictionaryPath;
     private int wordsCount;
