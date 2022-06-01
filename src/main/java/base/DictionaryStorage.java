@@ -1,5 +1,6 @@
 package base;
 
+import base.exceptions.DictionaryIsNotFoundException;
 import base.exceptions.EmptyDictionaryFileException;
 
 import java.io.IOException;
@@ -16,14 +17,18 @@ public class DictionaryStorage implements DictionaryWordInterface {
     private Path dictionaryPath;
     private int wordsCount;
 
-    public DictionaryStorage() throws IOException, EmptyDictionaryFileException {
+    public DictionaryStorage() throws EmptyDictionaryFileException, DictionaryIsNotFoundException {
         this.dictionaryPath = Path.of(DICTIONARY_PATH);
 
-        int wordsCount = countWords();
-        if (wordsCount != 0) {
-            this.wordsCount = wordsCount;
-        } else {
-            throw new EmptyDictionaryFileException();
+        try {
+            int wordsCount = countWords();
+            if (wordsCount != 0) {
+                this.wordsCount = wordsCount;
+            } else {
+                throw new EmptyDictionaryFileException();
+            }
+        } catch (IOException e) {
+            throw new DictionaryIsNotFoundException();
         }
     }
 
@@ -53,9 +58,10 @@ public class DictionaryStorage implements DictionaryWordInterface {
      * Returns a word from the dictionary by the line number.
      * @param lineNumber the number of a line where need to find the word in the dictionary.
      * @return a word from the dictionary.
+     * @throws DictionaryIsNotFoundException in case the issue with access to the dictionary.
      */
     @Override
-    public String getWord(int lineNumber) {
+    public String getWord(int lineNumber) throws DictionaryIsNotFoundException {
         String foundWord = "";
         try(Scanner scanner = new Scanner(dictionaryPath, StandardCharsets.UTF_8)) {
             for (int i = 1; i < lineNumber; i++) {
@@ -63,7 +69,7 @@ public class DictionaryStorage implements DictionaryWordInterface {
             }
             foundWord = scanner.nextLine();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new DictionaryIsNotFoundException();
         }
 
         return foundWord;
@@ -73,9 +79,10 @@ public class DictionaryStorage implements DictionaryWordInterface {
      * Returns true if the dictionary contains the parameter word with ignoring case.
      * @param word which need to search in the dictionary.
      * @return true if the dictionary contains the parameter word, false otherwise.
+     * @throws DictionaryIsNotFoundException in case the issue with access to the dictionary.
      */
     @Override
-    public boolean isExists(String word) {
+    public boolean isExists(String word) throws DictionaryIsNotFoundException {
         boolean isWordFound = false;
         try(Scanner scanner = new Scanner(dictionaryPath, StandardCharsets.UTF_8)) {
             while((!isWordFound) && (scanner.hasNext())) {
@@ -84,7 +91,7 @@ public class DictionaryStorage implements DictionaryWordInterface {
                 }
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new DictionaryIsNotFoundException();
         }
 
         return isWordFound;
