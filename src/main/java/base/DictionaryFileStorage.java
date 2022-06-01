@@ -10,12 +10,12 @@ import java.util.Scanner;
 /**
  * Represents a storage to get access to the dictionary file.
  */
-public class DictionaryStorage implements Dictionary {
+public class DictionaryFileStorage implements Dictionary {
     private static final String DICTIONARY_PATH = ".\\out\\resources\\russian5letterwords.txt";
     private Path dictionaryPath;
     private int wordsCount;
 
-    public DictionaryStorage() throws DictionaryIsNotFoundException {
+    public DictionaryFileStorage() throws DictionaryIsNotFoundException {
         this.dictionaryPath = Path.of(DICTIONARY_PATH);
 
         int wordsCount = countWords();
