@@ -1,4 +1,4 @@
-package base;
+package model;
 
 /**
  * Represents methods to access to the dictionary from different types of sources.

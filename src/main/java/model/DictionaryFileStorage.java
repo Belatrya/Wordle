@@ -1,6 +1,6 @@
-package base;
+package model;
 
-import base.exceptions.DictionaryIsNotFoundException;
+import model.exceptions.DictionaryIsNotFoundException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
