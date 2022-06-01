@@ -6,8 +6,9 @@ import view.UserInterface;
  * Represents the game process.
  */
 public class Game {
-    private final static int RULE_GAME_ROUNDS = 5;
+    private final static int RULE_GAME_ROUNDS = 6;
     private final static int RULE_LETTERS_COUNT = 5;
+
     private UserInterface userInterface;
     public Game() {
         userInterface = new UserInterface();
