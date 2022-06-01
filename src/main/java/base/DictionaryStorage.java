@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Represents a storage to get access to the dictionary file.
  */
-public class DictionaryStorage implements DictionaryWordInterface {
+public class DictionaryStorage implements Dictionary {
     private static final String DICTIONARY_PATH = ".\\out\\resources\\russian5letterwords.txt";
     private Path dictionaryPath;
     private int wordsCount;

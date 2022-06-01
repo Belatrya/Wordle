@@ -3,7 +3,7 @@ package base;
 /**
  * Represents methods to access to the dictionary from different types of sources.
  */
-public interface DictionaryWordInterface {
+public interface Dictionary {
     /**
      * Returns a count of all words in the dictionary.
      *
