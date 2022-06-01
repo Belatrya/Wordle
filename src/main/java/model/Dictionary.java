@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Optional;
+
 /**
  * Represents methods to access to the dictionary from different types of sources.
  */
@@ -12,12 +14,12 @@ public interface Dictionary {
     int getWordsCount();
 
     /**
-     * Returns a word from the dictionary by the line number.
+     * Returns an Optional instance for a word from the dictionary by the line number.
      *
      * @param lineNumber the number of a line where need to find the word in the dictionary.
-     * @return a word from the dictionary.
+     * @return an Optional instance for a word from the dictionary.
      */
-    String getWord(int lineNumber);
+    Optional<String> getWord(int lineNumber);
 
     /**
      * Returns true if the dictionary contains the parameter word with ignoring case.

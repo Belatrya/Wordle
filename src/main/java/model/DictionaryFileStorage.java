@@ -5,6 +5,7 @@ import model.exceptions.DictionaryIsNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -52,24 +53,25 @@ public class DictionaryFileStorage implements Dictionary {
     }
 
     /**
-     * Returns a word from the dictionary by the line number.
+     * Returns an Optional instance for a word from the dictionary by the line number.
      *
      * @param lineNumber the number of a line where need to find the word in the dictionary.
-     * @return a word from the dictionary.
+     * @return an Optional instance for a word from the dictionary.
      */
     @Override
-    public String getWord(int lineNumber) {
-        String foundWord = "";
-        try (Scanner scanner = new Scanner(dictionaryPath, StandardCharsets.UTF_8)) {
-            for (int i = 1; i < lineNumber; i++) {
-                scanner.nextLine();
-            }
-            foundWord = scanner.nextLine();
-        } catch (IOException e) {
-            throw new DictionaryIsNotFoundException();
-        }
+    public Optional<String> getWord(int lineNumber) {
+        if ((lineNumber <= wordsCount) && (lineNumber > 0)) {
 
-        return foundWord;
+            try (Scanner scanner = new Scanner(dictionaryPath, StandardCharsets.UTF_8)) {
+                for (int i = 1; i < lineNumber; i++) {
+                    scanner.nextLine();
+                }
+                return Optional.of(scanner.nextLine());
+            } catch (IOException e) {
+                throw new DictionaryIsNotFoundException();
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -80,17 +82,16 @@ public class DictionaryFileStorage implements Dictionary {
      */
     @Override
     public boolean isExists(String word) {
-        boolean isWordFound = false;
         try (Scanner scanner = new Scanner(dictionaryPath, StandardCharsets.UTF_8)) {
-            while ((!isWordFound) && (scanner.hasNext())) {
+            while (scanner.hasNext()) {
                 if (scanner.nextLine().equalsIgnoreCase(word)) {
-                    isWordFound = true;
+                    return true;
                 }
             }
         } catch (IOException e) {
             throw new DictionaryIsNotFoundException();
         }
 
-        return isWordFound;
+        return false;
     }
 }
