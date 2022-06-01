@@ -1,5 +1,6 @@
 package view;
-import java.util.Scanner;
+
+import java.io.Console;
 
 /**
  * Represents a dialog with the user.
@@ -14,6 +15,7 @@ public class UserInterface {
     public void greetingUser() {
         talkWithUser(GREETING_USER);
     }
+
     private void talkWithUser(String phrase) {
         System.out.println(phrase);
     }
@@ -22,12 +24,8 @@ public class UserInterface {
      * Asks the user to type a word and returns it.
      */
     public String getUserWord() {
-        String userWord;
         talkWithUser(ASK_TO_TYPE_WORD);
-
-        try (Scanner scanner = new Scanner(System.in)) {
-            userWord = scanner.nextLine();
-        }
-        return userWord;
+        Console console = System.console();
+        return console.readLine();
     }
 }
