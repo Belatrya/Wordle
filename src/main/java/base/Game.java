@@ -6,6 +6,7 @@ import view.UserInterface;
  * Represents the game process.
  */
 public class Game {
+
     private UserInterface userInterface;
     public Game() {
         userInterface = new UserInterface();

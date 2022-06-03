@@ -1,4 +1,6 @@
 package view;
+
+import java.io.Console;
 import java.util.Scanner;
 
 /**
@@ -14,6 +16,7 @@ public class UserInterface {
     public void greetingUser() {
         talkWithUser(GREETING_USER);
     }
+
     private void talkWithUser(String phrase) {
         System.out.println(phrase);
     }
@@ -22,12 +25,17 @@ public class UserInterface {
      * Asks the user to type a word and returns it.
      */
     public String getUserWord() {
-        String userWord;
         talkWithUser(ASK_TO_TYPE_WORD);
+        return getConsoleInput();
+    }
 
-        try (Scanner scanner = new Scanner(System.in)) {
-            userWord = scanner.nextLine();
+    private String getConsoleInput() {
+        Console console = System.console();
+        
+        if (console == null) {
+            Scanner scanner = new Scanner(System.in);
+            return scanner.nextLine();
         }
-        return userWord;
+        return console.readLine();
     }
 }
