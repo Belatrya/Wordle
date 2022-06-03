@@ -17,7 +17,12 @@ public class UserInterface {
         talkWithUser(GREETING_USER);
     }
 
-    private void talkWithUser(String phrase) {
+    /**
+     * Writes the phrase for the user into the console.
+     *
+     * @param phrase to write into the console.
+     */
+    public void talkWithUser(String phrase) {
         System.out.println(phrase);
     }
 
@@ -31,7 +36,7 @@ public class UserInterface {
 
     private String getConsoleInput() {
         Console console = System.console();
-        
+
         if (console == null) {
             Scanner scanner = new Scanner(System.in);
             return scanner.nextLine();
