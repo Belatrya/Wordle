@@ -23,23 +23,10 @@ public class Main {
             int wordsCount = dictionaryFileStorage.getWordsCount();
             System.out.printf(WORDS_COUNT_MESSAGE, wordsCount);
 
-            Main testMain = new Main();
-            int line;
-
-            line = 357;
-            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
-
-            line = wordsCount + 1;
-            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
-
-            line = 0;
-            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
-
-            line = 1;
-            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
-
-            line = wordsCount;
-            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
+            int[] testLines = new int[]{357, 0, 1, wordsCount, wordsCount + 1};
+            for (int line : testLines) {
+                checkWordPresentsTest(dictionaryFileStorage, line);
+            }
 
             UserInterface userInterface = new UserInterface();
             String userWord = userInterface.getUserWord();
@@ -50,7 +37,7 @@ public class Main {
         }
     }
 
-    private void checkWordPresentsTest(Dictionary dictionary, int line) {
+    private static void checkWordPresentsTest(Dictionary dictionary, int line) {
         Optional<String> word = dictionary.getWord(line);
 
         if (word.isPresent()) {
