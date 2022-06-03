@@ -1,6 +1,7 @@
 package view;
 
 import java.io.Console;
+import java.util.Scanner;
 
 /**
  * Represents a dialog with the user.
@@ -25,7 +26,16 @@ public class UserInterface {
      */
     public String getUserWord() {
         talkWithUser(ASK_TO_TYPE_WORD);
+        return getConsoleInput();
+    }
+
+    private String getConsoleInput() {
         Console console = System.console();
+        
+        if (console == null) {
+            Scanner scanner = new Scanner(System.in);
+            return scanner.nextLine();
+        }
         return console.readLine();
     }
 }
