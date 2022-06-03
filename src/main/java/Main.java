@@ -1,10 +1,17 @@
+import base.Game;
 import model.Dictionary;
 import model.DictionaryFileStorage;
-import base.Game;
 import model.exceptions.DictionaryIsNotFoundException;
 import view.UserInterface;
 
+import java.util.Optional;
+
 public class Main {
+    private static final String THERE_IS_NO_WORD_MESSAGE = "there is no word on %s line \n";
+    private static final String HIDDEN_WORD_ON_LINE_MESSAGE = "hidden word from %s line: %s \n";
+    private static final String WORDS_COUNT_MESSAGE = "words count: %d \n";
+    private static final String IS_THIS_WORD_EXIST_MESSAGE = "is this word exists: %s \n";
+
     public static void main(String[] args) {
         Game game = new Game();
         game.startGame();
@@ -13,46 +20,43 @@ public class Main {
         try {
             Dictionary dictionaryFileStorage = new DictionaryFileStorage();
 
-            System.out.println("words count: " + dictionaryFileStorage.getWordsCount());
+            int wordsCount = dictionaryFileStorage.getWordsCount();
+            System.out.printf(WORDS_COUNT_MESSAGE, wordsCount);
+
+            Main testMain = new Main();
             int line;
+
             line = 357;
-            if (dictionaryFileStorage.getWord(line).isPresent()) {
-                System.out.println("hidden word from " + line + " line: " + dictionaryFileStorage.getWord(line).get());
-            } else {
-                System.out.println("there is no word on " + line + " line");
-            }
-            line = 3483;
-            if (dictionaryFileStorage.getWord(line).isPresent()) {
-                System.out.println("hidden word from " + line + " line: " + dictionaryFileStorage.getWord(line).get());
-            } else {
-                System.out.println("there is no word on " + line + " line");
-            }
+            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
+
+            line = wordsCount + 1;
+            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
+
             line = 0;
-            if (dictionaryFileStorage.getWord(line).isPresent()) {
-                System.out.println("hidden word from " + line + " line: " + dictionaryFileStorage.getWord(line).get());
-            } else {
-                System.out.println("there is no word on " + line + " line");
-            }
+            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
 
             line = 1;
-            if (dictionaryFileStorage.getWord(line).isPresent()) {
-                System.out.println("hidden word from " + line + " line: " + dictionaryFileStorage.getWord(line).get());
-            } else {
-                System.out.println("there is no word on " + line + " line");
-            }
-            line = 3482;
-            if (dictionaryFileStorage.getWord(line).isPresent()) {
-                System.out.println("hidden word from " + line + " line: " + dictionaryFileStorage.getWord(line).get());
-            } else {
-                System.out.println("there is no word on " + line + " line");
-            }
+            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
+
+            line = wordsCount;
+            testMain.checkWordPresentsTest(dictionaryFileStorage, line);
 
             UserInterface userInterface = new UserInterface();
             String userWord = userInterface.getUserWord();
             // bug: букву 'ё' надо приравнять к 'е' при сравнении или указать, что они не равны в начале игры
-            System.out.println("is this word exists: " + dictionaryFileStorage.isExists(userWord));
+            System.out.printf(IS_THIS_WORD_EXIST_MESSAGE, dictionaryFileStorage.isExists(userWord));
         } catch (DictionaryIsNotFoundException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private void checkWordPresentsTest(Dictionary dictionary, int line) {
+        Optional<String> word = dictionary.getWord(line);
+
+        if (word.isPresent()) {
+            System.out.printf(HIDDEN_WORD_ON_LINE_MESSAGE, line, word.get());
+        } else {
+            System.out.printf(THERE_IS_NO_WORD_MESSAGE, line);
         }
     }
 }

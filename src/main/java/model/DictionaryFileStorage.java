@@ -17,7 +17,7 @@ public class DictionaryFileStorage implements Dictionary {
     private int wordsCount;
 
     public DictionaryFileStorage() throws DictionaryIsNotFoundException {
-        this.dictionaryPath = Path.of(DICTIONARY_PATH);
+        dictionaryPath = Path.of(DICTIONARY_PATH);
 
         int wordsCount = countWords();
         if (wordsCount != 0) {
