@@ -16,15 +16,14 @@ public class Game {
     private static final String CORRECT_WORD = "\"%s\" word is correct!";
     private UserInterface userInterface;
     private String hiddenWord;
-    private Dictionary dictionary;
 
     public Game() {
         userInterface = new UserInterface();
-        dictionary = new DictionaryFileStorage();
         hiddenWord = createHiddenWord();
     }
 
     private String createHiddenWord() {
+        Dictionary dictionary = new DictionaryFileStorage();
         int randomIndex = (int) (Math.random() * dictionary.getWordsCount());
 
         Optional<String> hiddenWord = dictionary.getWord(randomIndex);
@@ -64,16 +63,13 @@ public class Game {
      * @return a word which exists in the dictionary.
      */
     private String getExistingUserWord() {
-        String userWord = getUserWord();
+        String userWord = userInterface.getUserWord();
+        Checker checker = new Checker(userWord);
 
-        while (!dictionary.isExists(userWord)) {
+        while (!checker.isWordExists()) {
             userInterface.talkWithUser(String.format(WORD_NOT_EXIST, userWord));
-            userWord = getUserWord();
+            userWord = userInterface.getUserWord();
         }
         return userWord;
-    }
-
-    private String getUserWord() {
-        return userInterface.getUserWord();
     }
 }
