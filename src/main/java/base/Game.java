@@ -11,9 +11,6 @@ import java.util.Optional;
  * Represents the game process.
  */
 public class Game {
-    private static final String WORD_NOT_EXIST = "\"%s\" word doesn't exist!";
-    private static final String WRONG_WORD = "\"%s\" word is wrong.";
-    private static final String CORRECT_WORD = "\"%s\" word is correct!";
     private UserInterface userInterface;
     private String hiddenWord;
 
@@ -49,11 +46,7 @@ public class Game {
         String userWord = getExistingUserWord();
 
         Checker checker = new Checker(hiddenWord, userWord);
-        if (checker.areWordsEqual()) {
-            userInterface.talkWithUser(String.format(WRONG_WORD, userWord));
-        } else {
-            userInterface.talkWithUser(String.format(CORRECT_WORD, userWord));
-        }
+        userInterface.sayIsUsersWordCorrect(checker.areWordsEqual(), userWord);
     }
 
     /**
@@ -64,10 +57,9 @@ public class Game {
      */
     private String getExistingUserWord() {
         String userWord = userInterface.getUserWord();
-        Checker checker = new Checker(userWord);
 
-        while (!checker.isWordExists()) {
-            userInterface.talkWithUser(String.format(WORD_NOT_EXIST, userWord));
+        while (!new Checker(userWord).isWordExists()) {
+            userInterface.sayUsersWordNotExist(userWord);
             userWord = userInterface.getUserWord();
         }
         return userWord;
