@@ -38,9 +38,7 @@ public class TestMain {
         } catch (DictionaryIsNotFoundException e) {
             UserInterface userInterface = new UserInterface();
             userInterface.talkWithUser(e.getMessage());
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
