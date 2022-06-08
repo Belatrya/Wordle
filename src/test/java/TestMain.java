@@ -1,6 +1,7 @@
 import base.Game;
 import model.Dictionary;
 import model.DictionaryFileStorage;
+import model.DictionaryType;
 import model.exceptions.DictionaryIsNotFoundException;
 import view.UserInterface;
 
@@ -14,7 +15,7 @@ public class TestMain {
 
     public static void main(String[] args) {
         try {
-            Dictionary dictionaryFileStorage = new DictionaryFileStorage();
+            Dictionary dictionaryFileStorage = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
 
             int wordsCount = dictionaryFileStorage.getWordsCount();
             System.out.printf(WORDS_COUNT_MESSAGE, wordsCount);

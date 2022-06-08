@@ -2,6 +2,7 @@ package base;
 
 import model.Dictionary;
 import model.DictionaryFileStorage;
+import model.DictionaryType;
 
 /**
  * Represents checks for words.
@@ -37,7 +38,7 @@ public class Checker {
      * @return true if a word exists in the dictionary, false otherwise.
      */
     public boolean isWordExists() {
-        Dictionary dictionary = new DictionaryFileStorage();
+        Dictionary dictionary = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
         return dictionary.isExists(userWord);
     }
 

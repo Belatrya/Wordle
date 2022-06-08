@@ -2,6 +2,7 @@ package base;
 
 import model.Dictionary;
 import model.DictionaryFileStorage;
+import model.DictionaryType;
 import model.exceptions.DictionaryIsNotFoundException;
 import view.UserInterface;
 
@@ -21,7 +22,7 @@ public class Game {
     }
 
     private String createHiddenWord() {
-        Dictionary dictionary = new DictionaryFileStorage();
+        Dictionary dictionary = new DictionaryFileStorage(DictionaryType.HIDDEN_WORDS);
         int randomIndex = (int) (Math.random() * dictionary.getWordsCount());
 
         Optional<String> hiddenWord = dictionary.getWord(randomIndex);
