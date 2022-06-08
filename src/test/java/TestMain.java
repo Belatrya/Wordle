@@ -1,8 +1,10 @@
+import base.Game;
 import model.Dictionary;
 import model.DictionaryFileStorage;
 import model.exceptions.DictionaryIsNotFoundException;
 import view.UserInterface;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 public class TestMain {
@@ -21,9 +23,23 @@ public class TestMain {
             for (int line : testLines) {
                 checkWordPresentsTest(dictionaryFileStorage, line);
             }
+
+            Game game = new Game();
+            game.startGame();
+
+            Field hiddenWordField = game.getClass().getDeclaredField("hiddenWord");
+            hiddenWordField.setAccessible(true);
+            String hiddenWord = (String) hiddenWordField.get(game);
+
+            System.out.println(hiddenWord);
+
+            game.playRound();
+
         } catch (DictionaryIsNotFoundException e) {
             UserInterface userInterface = new UserInterface();
             userInterface.talkWithUser(e.getMessage());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 

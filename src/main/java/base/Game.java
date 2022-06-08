@@ -46,7 +46,22 @@ public class Game {
         String userWord = getExistingUserWord();
 
         Checker checker = new Checker(hiddenWord, userWord);
-        userInterface.sayIsUsersWordCorrect(checker.areWordsEqual(), userWord);
+        boolean wordsEqual = checker.areWordsEqual();
+        userInterface.sayIsUsersWordCorrect(wordsEqual, userWord);
+
+        if (!wordsEqual) {
+            char[] userWordLetters = userWord.toUpperCase().toCharArray();
+
+            for (int i = 0; i < hiddenWord.length(); i++) {
+                char letter = userWordLetters[i];
+
+                if (checker.isLetterExistInTheHiddenWord(letter)) {
+                    userInterface.writeLetterOnTheRightPlace(checker.isLetterOnTheRightPlace(i), letter);
+                } else {
+                    userInterface.writeLetterNotExistInHiddenWord(letter);
+                }
+            }
+        }
     }
 
     /**
