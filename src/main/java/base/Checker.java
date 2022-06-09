@@ -21,7 +21,7 @@ public class Checker {
     }
 
     /**
-     * True if the user's word equals to the hidden word.
+     * Compares user's word with the hidden word.
      *
      * @return true if the user's word equals to the hidden word, false otherwise.
      */

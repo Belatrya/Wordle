@@ -13,7 +13,7 @@ public class UserInterface {
     private static final String WRONG_WORD = "\"%s\" word is wrong.";
     private static final String CORRECT_WORD = "\"%s\" word is correct!";
     private static final String LETTER_ON_THE_RIGHT_PLACE = "%s - letter exists and is on the right place!";
-    private static final String LETTER_NOT_ON_THE_RIGHT_PLACE = "%s - letter exists but not not on the right place.";
+    private static final String LETTER_NOT_ON_THE_RIGHT_PLACE = "%s - letter exists but not on the right place.";
     private static final String LETTER_NOT_EXIST = "%s - letter doesn't exist in the hidden word.";
     private static final String ROUND_STARTED = "The round #%d has started!";
     private static final String WINNER = "Congratulations you are the winner!";
