@@ -12,19 +12,39 @@ public class UserInterface {
     private static final String WORD_NOT_EXIST = "\"%s\" word doesn't exist!";
     private static final String WRONG_WORD = "\"%s\" word is wrong.";
     private static final String CORRECT_WORD = "\"%s\" word is correct!";
-    private static final String LETTER_ON_THE_RIGHT_PLACE = "%s - letter exists and is on the right place!";
-    private static final String LETTER_NOT_ON_THE_RIGHT_PLACE = "%s - letter exists but not on the right place.";
-    private static final String LETTER_NOT_EXIST = "%s - letter doesn't exist in the hidden word.";
+    private static final String LETTER_CORRECT = "%s - CORRECT";
+    private static final String LETTER_NOT_REALLY = "%s - NOT REALLY";
+    private static final String LETTER_WRONG = "%s - WRONG";
     private static final String ROUND_STARTED = "The round #%d has started!";
     private static final String WINNER = "Congratulations you are the winner!";
     private static final String LOSER = "Sorry you lost the game.";
     private static final String HIDDEN_WORD = "The hidden word was \"%s\".";
+    private static final String RULES_LETTERS_ROUNDS =
+            "There is the hidden word from 5 letters, you will have %d rounds to guess it.";
+    private static final String RULES_GUESSING = "Every round you will need to type 1 existing word.";
+    private static final String RULES_LETTERS_DESCRIBING =
+            "If your word doesn't equal to the hidden, there will be description for every letter:";
+    private static final String RULES_LETTER_NOT_EXIST = " - WRONG - letter doesn't exist in the hidden word";
+    private static final String RULES_LETTER_NOT_ON_THE_RIGHT_PLACE =
+            " - NOT REALLY - letter exists but not on the right place";
+    private static final String RULES_LETTER_ON_THE_RIGHT_PLACE  =
+            " - CORRECT - letter exists and is on the right place";
+    private static final String GOOD_LUCK = "Let's start and good luck!";
+
+
 
     /**
      * Greets the user.
      */
-    public void greetingUser() {
+    public void greetingUserAndRules(int rounds) {
         talkWithUser(GREETING_USER);
+        talkWithUser(String.format(RULES_LETTERS_ROUNDS, rounds));
+        talkWithUser(RULES_GUESSING);
+        talkWithUser(RULES_LETTERS_DESCRIBING);
+        talkWithUser(RULES_LETTER_NOT_EXIST);
+        talkWithUser(RULES_LETTER_NOT_ON_THE_RIGHT_PLACE);
+        talkWithUser(RULES_LETTER_ON_THE_RIGHT_PLACE);
+        talkWithUser(GOOD_LUCK);
     }
 
     /**
@@ -73,9 +93,9 @@ public class UserInterface {
      */
     public void writeLetterOnTheRightPlace(boolean rightPlace, char letter) {
         if (rightPlace) {
-            talkWithUser(String.format(LETTER_ON_THE_RIGHT_PLACE, letter));
+            talkWithUser(String.format(LETTER_CORRECT, letter));
         } else {
-            talkWithUser(String.format(LETTER_NOT_ON_THE_RIGHT_PLACE, letter));
+            talkWithUser(String.format(LETTER_NOT_REALLY, letter));
         }
     }
 
@@ -85,7 +105,7 @@ public class UserInterface {
      * @param letter letter from the user's word.
      */
     public void writeLetterNotExistInHiddenWord(char letter) {
-        talkWithUser(String.format(LETTER_NOT_EXIST, letter));
+        talkWithUser(String.format(LETTER_WRONG, letter));
     }
 
     /**

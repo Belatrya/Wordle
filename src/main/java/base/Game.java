@@ -37,7 +37,7 @@ public class Game {
      * Starts the game with greeting the user.
      */
     public void startGame() {
-        userInterface.greetingUser();
+        userInterface.greetingUserAndRules(GAME_RULE_COUNT_OF_ROUNDS);
     }
 
     /**
