@@ -34,7 +34,7 @@ public class UserInterface {
 
 
     /**
-     * Greets the user.
+     * Greets the user and writes the Game rules.
      */
     public void greetingUserAndRules(int rounds) {
         talkWithUser(GREETING_USER);
