@@ -27,14 +27,14 @@ public class UserInterface {
     private static final String RULES_LETTER_NOT_EXIST = " - WRONG - letter doesn't exist in the hidden word";
     private static final String RULES_LETTER_NOT_ON_THE_RIGHT_PLACE =
             " - NOT REALLY - letter exists but not on the right place";
-    private static final String RULES_LETTER_ON_THE_RIGHT_PLACE  =
+    private static final String RULES_LETTER_ON_THE_RIGHT_PLACE =
             " - CORRECT - letter exists and is on the right place";
     private static final String GOOD_LUCK = "Let's start and good luck!";
 
-
-
     /**
      * Greets the user and writes the Game rules.
+     *
+     * @param rounds count of the game rounds.
      */
     public void greetingUserAndRules(int rounds) {
         talkWithUser(GREETING_USER);
