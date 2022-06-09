@@ -33,7 +33,7 @@ public class TestMain {
 
             System.out.println(hiddenWord);
 
-            game.playRound();
+            game.playGame();
 
         } catch (DictionaryIsNotFoundException e) {
             UserInterface userInterface = new UserInterface();

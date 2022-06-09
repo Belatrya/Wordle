@@ -11,6 +11,7 @@ import java.util.Optional;
  * Represents the game process.
  */
 public class Game {
+    private static final int GAME_RULE_COUNT_OF_ROUNDS = 6;
     private UserInterface userInterface;
     private String hiddenWord;
 
@@ -41,13 +42,15 @@ public class Game {
     /**
      * Represents a single game round as user's one try to guess the hidden word.
      * Asks for a user's word then checks that word equals to the hidden word.
+     *
+     * @return true if the user's try was successful and his word equals to hidden, false otherwise.
      */
-    public void playRound() {
+    public boolean playRound() {
         String userWord = getExistingUserWord();
 
         Checker checker = new Checker(hiddenWord, userWord);
         boolean wordsEqual = checker.areWordsEqual();
-        userInterface.sayIsUsersWordCorrect(wordsEqual, userWord);
+        userInterface.writeIsUsersWordCorrect(wordsEqual, userWord);
 
         if (!wordsEqual) {
             char[] userWordLetters = userWord.toUpperCase().toCharArray();
@@ -62,6 +65,22 @@ public class Game {
                 }
             }
         }
+        return wordsEqual;
+    }
+
+    /**
+     * Represents the Game by repeating rounds and counting the game result after it.
+     */
+    public void playGame() {
+        boolean isWin = false;
+        for (int i = 1; i <= GAME_RULE_COUNT_OF_ROUNDS; i++) {
+            userInterface.writeNumberOfRounds(i);
+            isWin = playRound();
+            if (isWin) {
+                break;
+            }
+        }
+        userInterface.writeGameResult(isWin, hiddenWord);
     }
 
     /**
@@ -74,7 +93,7 @@ public class Game {
         String userWord = userInterface.getUserWord();
 
         while (!new Checker(userWord).isWordExists()) {
-            userInterface.sayUsersWordNotExist(userWord);
+            userInterface.writeUsersWordNotExist(userWord);
             userWord = userInterface.getUserWord();
         }
         return userWord;

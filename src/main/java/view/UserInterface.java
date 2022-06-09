@@ -13,8 +13,12 @@ public class UserInterface {
     private static final String WRONG_WORD = "\"%s\" word is wrong.";
     private static final String CORRECT_WORD = "\"%s\" word is correct!";
     private static final String LETTER_ON_THE_RIGHT_PLACE = "%s - letter exists and is on the right place!";
-    private static final String LETTER_NOT_ON_THE_RIGHT_PLACE = "%s - letter exists but not not on the right place.";
+    private static final String LETTER_NOT_ON_THE_RIGHT_PLACE = "%s - letter exists but not on the right place.";
     private static final String LETTER_NOT_EXIST = "%s - letter doesn't exist in the hidden word.";
+    private static final String ROUND_STARTED = "The round #%d has started!";
+    private static final String WINNER = "Congratulations you are the winner!";
+    private static final String LOSER = "Sorry you lost the game.";
+    private static final String HIDDEN_WORD = "The hidden word was \"%s\".";
 
     /**
      * Greets the user.
@@ -24,12 +28,36 @@ public class UserInterface {
     }
 
     /**
+     * Writes the phrase about the number of started round.
+     *
+     * @param number number of the round.
+     */
+    public void writeNumberOfRounds(int number) {
+        talkWithUser(String.format(ROUND_STARTED, number));
+    }
+
+    /**
+     * Writes the phrase about the game result. If the user lost the game it writes the hidden word.
+     *
+     * @param result     true if the user has won, false otherwise.
+     * @param hiddenWord hidden word.
+     */
+    public void writeGameResult(boolean result, String hiddenWord) {
+        if (result) {
+            talkWithUser(WINNER);
+        } else {
+            talkWithUser(LOSER);
+            talkWithUser(String.format(HIDDEN_WORD, hiddenWord));
+        }
+    }
+
+    /**
      * Writes the phrase about user's word according to the 'correct' parameter.
      *
      * @param correct  parameter to say for the current word, true for correct and false otherwise.
      * @param userWord user's word.
      */
-    public void sayIsUsersWordCorrect(boolean correct, String userWord) {
+    public void writeIsUsersWordCorrect(boolean correct, String userWord) {
         if (correct) {
             talkWithUser(String.format(CORRECT_WORD, userWord));
         } else {
@@ -61,11 +89,11 @@ public class UserInterface {
     }
 
     /**
-     * Writes the phrase about user's word does not exist.
+     * Writes the phrase about user's word does not exist in the dictionary.
      *
      * @param userWord user's word.
      */
-    public void sayUsersWordNotExist(String userWord) {
+    public void writeUsersWordNotExist(String userWord) {
         talkWithUser(String.format(WORD_NOT_EXIST, userWord));
     }
 
