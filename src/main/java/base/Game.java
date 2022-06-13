@@ -21,6 +21,10 @@ public class Game {
         hiddenWord = createHiddenWord();
     }
 
+    public int getGameRuleCountOfRounds() {
+        return GAME_RULE_COUNT_OF_ROUNDS;
+    }
+
     private String createHiddenWord() {
         Dictionary dictionary = new DictionaryFileStorage(DictionaryType.HIDDEN_WORDS);
         int randomIndex = (int) (Math.random() * dictionary.getWordsCount());
@@ -31,13 +35,6 @@ public class Game {
         } else {
             throw new DictionaryIsNotFoundException("Failed the attempt to create hidden word.");
         }
-    }
-
-    /**
-     * Starts the game with greeting the user.
-     */
-    public void startGame() {
-        userInterface.greetingUserAndRules(GAME_RULE_COUNT_OF_ROUNDS);
     }
 
     /**
