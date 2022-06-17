@@ -10,11 +10,13 @@ import java.util.Optional;
 
 /**
  * Represents the game process.
+ * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
 public class Game {
     private static final int GAME_RULE_COUNT_OF_ROUNDS = 6;
     private UserInterface userInterface;
     private String hiddenWord;
+    private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
 
     public Game() {
         userInterface = new UserInterface();
@@ -33,7 +35,7 @@ public class Game {
         if (hiddenWord.isPresent()) {
             return hiddenWord.get();
         } else {
-            throw new DictionaryIsNotFoundException("Failed the attempt to create hidden word.");
+            throw new DictionaryIsNotFoundException(CREATING_HIDDEN_WORD_EXCEPTION);
         }
     }
 
