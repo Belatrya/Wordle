@@ -7,8 +7,7 @@ public class Main {
         UserInterface userInterface = new UserInterface();
         try {
             Game game = new Game();
-            userInterface.greetingUserAndRules(game.getGameRuleCountOfRounds());
-            game.playGame();
+            userInterface.runGame(game);
         } catch (DictionaryIsNotFoundException e) {
             userInterface.talkWithUser(e.getMessage());
         }

@@ -20,6 +20,10 @@ public class Checker {
         this.userWord = userWord;
     }
 
+    public void setUserWord(String userWord) {
+        this.userWord = userWord;
+    }
+
     /**
      * Compares user's word with the hidden word.
      *
@@ -37,7 +41,7 @@ public class Checker {
      *
      * @return true if a word exists in the dictionary, false otherwise.
      */
-    public boolean isWordExists() {
+    public boolean isUserWordExists() {
         Dictionary dictionary = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
         return dictionary.isExists(userWord);
     }
