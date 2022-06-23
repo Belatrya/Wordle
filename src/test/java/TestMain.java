@@ -1,11 +1,10 @@
-import base.Game;
+import base.WordleFactory;
 import model.Dictionary;
 import model.DictionaryFileStorage;
 import model.DictionaryType;
 import model.exceptions.DictionaryIsNotFoundException;
 import view.UserInterface;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 public class TestMain {
@@ -14,7 +13,8 @@ public class TestMain {
     private static final String WORDS_COUNT_MESSAGE = "words count: %d \n";
 
     public static void main(String[] args) {
-        UserInterface userInterface = new UserInterface();
+        WordleFactory wordleFactory = new WordleFactory();
+        UserInterface userInterface = wordleFactory.createApp();
         try {
             Dictionary dictionaryFileStorage = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
 
@@ -26,20 +26,10 @@ public class TestMain {
                 checkWordPresentsTest(dictionaryFileStorage, line);
             }
 
-            Game game = new Game();
-
-            Field hiddenWordField = game.getClass().getDeclaredField("hiddenWord");
-            hiddenWordField.setAccessible(true);
-            String hiddenWord = (String) hiddenWordField.get(game);
-
-            System.out.println(hiddenWord);
-
-            userInterface.runGame(game);
+            userInterface.runGame();
 
         } catch (DictionaryIsNotFoundException e) {
             userInterface.talkWithUser(e.getMessage());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 
