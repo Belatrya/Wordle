@@ -55,8 +55,8 @@ public class UserInterface {
         writeGameResult(game.getGameWinningStatus(), game.getHiddenWord());
     }
 
-    private void writeGameRules(int rounds) {
-        talkWithUser(String.format(RULES_LETTERS_ROUNDS, rounds));
+    private void writeGameRules(int ruleCountOfRounds) {
+        talkWithUser(String.format(RULES_LETTERS_ROUNDS, ruleCountOfRounds));
         talkWithUser(RULES_GUESSING);
         talkWithUser(RULES_LETTERS_DESCRIBING);
         talkWithUser(RULES_LETTER_NOT_EXIST);
