@@ -5,6 +5,9 @@ import model.DictionaryFileStorage;
 import model.DictionaryType;
 import view.UserInterface;
 
+/**
+ * Initializes all dependencies for the Wordle application.
+ */
 public class WordleFactory {
     public UserInterface createApp() {
         Dictionary allWordsDictionary = createAllWordsDictionary();
@@ -27,7 +30,7 @@ public class WordleFactory {
         return new Checker(dictionary);
     }
 
-    public Game createGame(Dictionary dictionary) {
+    private Game createGame(Dictionary dictionary) {
         return new Game(dictionary);
     }
 }
