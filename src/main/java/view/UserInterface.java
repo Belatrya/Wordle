@@ -41,6 +41,9 @@ public class UserInterface {
         this.checker = checker;
     }
 
+    /**
+     * Represents the dialog with user at the time of the game process.
+     */
     public void runGame() {
         talkWithUser(GREETING_USER);
         writeGameRules(game.getGameRuleCountOfRounds());
