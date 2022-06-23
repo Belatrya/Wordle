@@ -1,8 +1,6 @@
 package base;
 
 import model.Dictionary;
-import model.DictionaryFileStorage;
-import model.DictionaryType;
 import model.exceptions.DictionaryIsNotFoundException;
 
 import java.util.Optional;
@@ -16,9 +14,11 @@ public class Game {
     private String hiddenWord;
     private boolean gameWon;
     private int currentRound;
+    private Dictionary hiddenWordDictionary;
     private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
 
-    public Game() {
+    public Game(Dictionary hiddenWordDictionary) {
+        this.hiddenWordDictionary = hiddenWordDictionary;
         hiddenWord = createHiddenWord();
         gameWon = false;
         currentRound = 1;
@@ -32,6 +32,10 @@ public class Game {
         return gameWon;
     }
 
+    public void setGameWinningStatus(boolean gameWon) {
+        this.gameWon = gameWon;
+    }
+
     public String getHiddenWord() {
         return hiddenWord;
     }
@@ -42,6 +46,7 @@ public class Game {
 
     /**
      * Returns true if the game is not won yet and if user's attempts have not ended.
+     *
      * @return true if the user have tries, false otherwise.
      */
     public boolean isUserHaveGameTries() {
@@ -49,10 +54,9 @@ public class Game {
     }
 
     private String createHiddenWord() {
-        Dictionary dictionary = new DictionaryFileStorage(DictionaryType.HIDDEN_WORDS);
-        int randomIndex = (int) (Math.random() * dictionary.getWordsCount());
+        int randomIndex = (int) (Math.random() * hiddenWordDictionary.getWordsCount());
 
-        Optional<String> hiddenWord = dictionary.getWord(randomIndex);
+        Optional<String> hiddenWord = hiddenWordDictionary.getWord(randomIndex);
         if (hiddenWord.isPresent()) {
             return hiddenWord.get();
         } else {
@@ -61,15 +65,9 @@ public class Game {
     }
 
     /**
-     * Represents a users try to guess the word and counts tries.
-     * Updates the game winning status according to user's word equals to hidden or not.
-     *
-     * @param userWord
+     * Increased current game round on 1.
      */
-    public void playRound(String userWord) {
-        Checker checker = new Checker(hiddenWord, userWord);
-
-        gameWon = checker.areWordsEqual();
+    public void increaseRoundsPlayed() {
         currentRound++;
     }
 }

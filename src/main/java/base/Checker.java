@@ -1,27 +1,15 @@
 package base;
 
 import model.Dictionary;
-import model.DictionaryFileStorage;
-import model.DictionaryType;
 
 /**
  * Represents checks for words.
  */
 public class Checker {
-    private String hiddenWord;
-    private String userWord;
+    private Dictionary allWordDictionary;
 
-    public Checker(String hiddenWord, String userWord) {
-        this.hiddenWord = hiddenWord;
-        this.userWord = userWord;
-    }
-
-    public Checker(String userWord) {
-        this.userWord = userWord;
-    }
-
-    public void setUserWord(String userWord) {
-        this.userWord = userWord;
+    public Checker(Dictionary allWordDictionary) {
+        this.allWordDictionary = allWordDictionary;
     }
 
     /**
@@ -29,7 +17,7 @@ public class Checker {
      *
      * @return true if the user's word equals to the hidden word, false otherwise.
      */
-    public boolean areWordsEqual() {
+    public boolean isHiddenEqualsToUserWord(String hiddenWord, String userWord) {
         if (hiddenWord.equalsIgnoreCase(userWord)) {
             return true;
         }
@@ -41,9 +29,8 @@ public class Checker {
      *
      * @return true if a word exists in the dictionary, false otherwise.
      */
-    public boolean isUserWordExists() {
-        Dictionary dictionary = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
-        return dictionary.isExists(userWord);
+    public boolean isUserWordExists(String userWord) {
+        return allWordDictionary.isExists(userWord);
     }
 
     /**
@@ -52,7 +39,7 @@ public class Checker {
      * @param letterIndex index for the checking letters.
      * @return true if the letter from the user's word is in the same place for the hidden word, false otherwise.
      */
-    public boolean isLetterOnTheRightPlace(int letterIndex) {
+    public boolean isLetterOnTheRightPlace(int letterIndex, String hiddenWord, String userWord) {
         char userWordLetter = userWord.toUpperCase().charAt(letterIndex);
         char hiddenWordLetter = hiddenWord.toUpperCase().charAt(letterIndex);
         return userWordLetter == hiddenWordLetter;
@@ -64,7 +51,7 @@ public class Checker {
      * @param letter letter from the user's word.
      * @return true if the letter from the user's word exists in the hidden word, false otherwise.
      */
-    public boolean isLetterExistInTheHiddenWord(char letter) {
+    public boolean isLetterExistInTheHiddenWord(char letter, String hiddenWord) {
         return hiddenWord.contains(String.valueOf(letter).toUpperCase());
     }
 }

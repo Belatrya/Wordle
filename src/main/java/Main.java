@@ -1,13 +1,13 @@
-import base.Game;
+import base.WordleFactory;
 import model.exceptions.DictionaryIsNotFoundException;
 import view.UserInterface;
 
 public class Main {
     public static void main(String[] args) {
-        UserInterface userInterface = new UserInterface();
+        WordleFactory wordleFactory = new WordleFactory();
+        UserInterface userInterface = wordleFactory.createApp();
         try {
-            Game game = new Game();
-            userInterface.runGame(game);
+            userInterface.runGame();
         } catch (DictionaryIsNotFoundException e) {
             userInterface.talkWithUser(e.getMessage());
         }

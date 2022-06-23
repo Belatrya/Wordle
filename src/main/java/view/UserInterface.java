@@ -33,26 +33,37 @@ public class UserInterface {
     private static final String RULES_LETTER_ON_THE_RIGHT_PLACE =
             " - CORRECT - letter exists and is on the right place";
     private static final String GOOD_LUCK = "Let's start and good luck!";
+    private Game game;
+    private Checker checker;
 
-    public void runGame(Game game) {
+    public UserInterface(Game game, Checker checker) {
+        this.game = game;
+        this.checker = checker;
+    }
+
+    public void runGame() {
         talkWithUser(GREETING_USER);
         writeGameRules(game.getGameRuleCountOfRounds());
         talkWithUser(GOOD_LUCK);
+        String hiddenWord = game.getHiddenWord();
+        String userWord;
 
         while (game.isUserHaveGameTries()) {
             talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
 
-            String userWord = getExistingUserWord();
-            game.playRound(userWord);
-            boolean gameResult = game.getGameWinningStatus();
+            userWord = getExistingUserWord();
+
+            boolean gameResult = checker.isHiddenEqualsToUserWord(hiddenWord, userWord);
 
             writeIsUsersWordCorrect(gameResult, userWord);
 
             if (!gameResult) {
-                writeWordDescriptionByLetters(game.getHiddenWord(), userWord);
+                writeWordDescriptionByLetters(hiddenWord, userWord);
             }
+            game.increaseRoundsPlayed();
+            game.setGameWinningStatus(gameResult);
         }
-        writeGameResult(game.getGameWinningStatus(), game.getHiddenWord());
+        writeGameResult(game.getGameWinningStatus(), hiddenWord);
     }
 
     private void writeGameRules(int ruleCountOfRounds) {
@@ -88,14 +99,13 @@ public class UserInterface {
     }
 
     private void writeWordDescriptionByLetters(String hiddenWord, String userWord) {
-        Checker checker = new Checker(hiddenWord, userWord);
         char[] userWordLetters = userWord.toUpperCase().toCharArray();
 
         for (int i = 0; i < hiddenWord.length(); i++) {
             char letter = userWordLetters[i];
 
-            if (checker.isLetterExistInTheHiddenWord(letter)) {
-                writeLetterOnTheRightPlace(checker.isLetterOnTheRightPlace(i), letter);
+            if (checker.isLetterExistInTheHiddenWord(letter, hiddenWord)) {
+                writeLetterOnTheRightPlace(checker.isLetterOnTheRightPlace(i, hiddenWord, userWord), letter);
             } else {
                 talkWithUser(String.format(LETTER_WRONG, letter));
             }
@@ -127,17 +137,18 @@ public class UserInterface {
      * @return a word which exists in the dictionary.
      */
     private String getExistingUserWord() {
-        talkWithUser(ASK_TO_TYPE_WORD);
-        String userWord = getConsoleInput();
-        Checker checker = new Checker(userWord);
+        String userWord = getUserWord();
 
-        while (!checker.isUserWordExists()) {
+        while (!checker.isUserWordExists(userWord)) {
             talkWithUser(String.format(WORD_NOT_EXIST, userWord));
-            talkWithUser(ASK_TO_TYPE_WORD);
-            userWord = getConsoleInput();
-            checker.setUserWord(userWord);
+            userWord = getUserWord();
         }
         return userWord;
+    }
+
+    private String getUserWord() {
+        talkWithUser(ASK_TO_TYPE_WORD);
+        return getConsoleInput();
     }
 
     private String getConsoleInput() {
