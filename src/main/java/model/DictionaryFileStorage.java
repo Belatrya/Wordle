@@ -10,10 +10,12 @@ import java.util.Scanner;
 
 /**
  * Represents a storage to get access to the dictionary file.
+ * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
 public class DictionaryFileStorage implements Dictionary {
     private Path dictionaryPath;
     private int wordsCount;
+    private static final String EMPTY_FILE_EXCEPTION = "The dictionary file is empty!";
 
     public DictionaryFileStorage(DictionaryType type) throws DictionaryIsNotFoundException {
         dictionaryPath = Path.of(type.getPath());
@@ -22,7 +24,7 @@ public class DictionaryFileStorage implements Dictionary {
         if (wordsCount != 0) {
             this.wordsCount = wordsCount;
         } else {
-            throw new DictionaryIsNotFoundException("The dictionary file is empty!");
+            throw new DictionaryIsNotFoundException(EMPTY_FILE_EXCEPTION);
         }
     }
 
