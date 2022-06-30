@@ -50,7 +50,7 @@ public class Game {
      * @return true if the user have tries, false otherwise.
      */
     public boolean doesUserHaveGameTries() {
-        return !hiddenWordGuessed && (currentRound <= GAME_RULE_COUNT_OF_ROUNDS);
+        return !isHiddenWordGuessed() && (getCurrentRound() <= getGameRuleCountOfRounds());
     }
 
     private String createHiddenWord() {
