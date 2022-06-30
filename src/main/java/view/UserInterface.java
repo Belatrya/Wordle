@@ -2,6 +2,7 @@ package view;
 
 import base.Checker;
 import base.Game;
+import model.exceptions.DictionaryIsNotFoundException;
 
 import java.io.Console;
 import java.util.Scanner;
@@ -35,24 +36,28 @@ public class UserInterface {
     private static final String GOOD_LUCK = "Let's start and good luck!";
 
     public void runGame(Game game) {
-        talkWithUser(GREETING_USER);
-        writeGameRules(game.getGameRuleCountOfRounds());
-        talkWithUser(GOOD_LUCK);
+        try {
+            talkWithUser(GREETING_USER);
+            writeGameRules(game.getGameRuleCountOfRounds());
+            talkWithUser(GOOD_LUCK);
 
-        while (game.isUserHaveGameTries()) {
-            talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
+            while (game.isUserHaveGameTries()) {
+                talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
 
-            String userWord = getExistingUserWord();
-            game.playRound(userWord);
-            boolean gameResult = game.getGameWinningStatus();
+                String userWord = getExistingUserWord();
+                game.playRound(userWord);
+                boolean gameResult = game.getGameWinningStatus();
 
-            writeIsUsersWordCorrect(gameResult, userWord);
+                writeIsUsersWordCorrect(gameResult, userWord);
 
-            if (!gameResult) {
-                writeWordDescriptionByLetters(game.getHiddenWord(), userWord);
+                if (!gameResult) {
+                    writeWordDescriptionByLetters(game.getHiddenWord(), userWord);
+                }
             }
+            writeGameResult(game.getGameWinningStatus(), game.getHiddenWord());
+        } catch (DictionaryIsNotFoundException e) {
+            talkWithUser(e.getMessage());
         }
-        writeGameResult(game.getGameWinningStatus(), game.getHiddenWord());
     }
 
     private void writeGameRules(int ruleCountOfRounds) {
@@ -116,7 +121,7 @@ public class UserInterface {
         }
     }
 
-    public void talkWithUser(String phrase) {
+    private void talkWithUser(String phrase) {
         System.out.println(phrase);
     }
 

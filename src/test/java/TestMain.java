@@ -36,8 +36,6 @@ public class TestMain {
 
             userInterface.runGame(game);
 
-        } catch (DictionaryIsNotFoundException e) {
-            userInterface.talkWithUser(e.getMessage());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
