@@ -42,6 +42,10 @@ public class UserInterface {
         this.checker = checker;
     }
 
+    private String getHiddenWord() {
+        return game.getHiddenWord();
+    }
+
     /**
      * Represents the dialog with user at the time of the game process.
      */
@@ -73,7 +77,7 @@ public class UserInterface {
         talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
 
         String userWord = getExistingUserWord();
-        game.setHiddenWordGuessed(checker.isHiddenEqualsToUserWord(game.getHiddenWord(), userWord));
+        game.setHiddenWordGuessed(checker.isHiddenEqualsToUserWord(getHiddenWord(), userWord));
         game.increaseRoundsPlayed();
 
         writeRoundResult(userWord);
@@ -87,7 +91,7 @@ public class UserInterface {
             talkWithUser(WINNER);
         } else {
             talkWithUser(LOSER);
-            talkWithUser(String.format(HIDDEN_WORD, game.getHiddenWord()));
+            talkWithUser(String.format(HIDDEN_WORD, getHiddenWord()));
         }
     }
 
@@ -98,12 +102,11 @@ public class UserInterface {
             talkWithUser(String.format(WRONG_WORD, userWord));
             char[] userWordLetters = userWord.toUpperCase().toCharArray();
 
-            for (int i = 0; i < game.getHiddenWord().length(); i++) {
+            for (int i = 0; i < getHiddenWord().length(); i++) {
                 char letter = userWordLetters[i];
 
-                if (checker.isLetterExistInTheHiddenWord(letter, game.getHiddenWord())) {
-                    boolean rightPlace = checker.isLetterOnTheRightPlace(i, game.getHiddenWord(), userWord);
-                    writeLetterOnTheRightPlace(rightPlace, letter);
+                if (checker.isLetterExistInTheHiddenWord(letter, getHiddenWord())) {
+                    writeLetterOnTheRightPlace(checker.isLetterOnTheRightPlace(i, getHiddenWord(), userWord), letter);
                 } else {
                     talkWithUser(String.format(LETTER_WRONG, letter));
                 }
