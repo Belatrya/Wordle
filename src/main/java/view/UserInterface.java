@@ -1,5 +1,9 @@
 package view;
 
+import base.Checker;
+import base.Game;
+import model.exceptions.DictionaryIsNotFoundException;
+
 import java.io.Console;
 import java.util.Scanner;
 
@@ -32,13 +36,26 @@ public class UserInterface {
     private static final String GOOD_LUCK = "Let's start and good luck!";
 
     /**
-     * Greets the user and writes the Game rules.
+     * Represents the game process with user.
      *
-     * @param rounds count of the game rounds.
+     * @param game an exemplar of the game to play with.
      */
-    public void greetingUserAndRules(int rounds) {
+    public void runGame(Game game) {
+        try {
+            writeGameRules(game.getGameRuleCountOfRounds());
+
+            while (game.doesUserHaveGameTries()) {
+                playRound(game);
+            }
+            writeGameResult(game.isHiddenWordGuessed(), game.getHiddenWord());
+        } catch (DictionaryIsNotFoundException e) {
+            talkWithUser(e.getMessage());
+        }
+    }
+
+    private void writeGameRules(int ruleCountOfRounds) {
         talkWithUser(GREETING_USER);
-        talkWithUser(String.format(RULES_LETTERS_ROUNDS, rounds));
+        talkWithUser(String.format(RULES_LETTERS_ROUNDS, ruleCountOfRounds));
         talkWithUser(RULES_GUESSING);
         talkWithUser(RULES_LETTERS_DESCRIBING);
         talkWithUser(RULES_LETTER_NOT_EXIST);
@@ -47,13 +64,13 @@ public class UserInterface {
         talkWithUser(GOOD_LUCK);
     }
 
-    /**
-     * Writes the phrase about the number of started round.
-     *
-     * @param number number of the round.
-     */
-    public void writeNumberOfRounds(int number) {
-        talkWithUser(String.format(ROUND_STARTED, number));
+    private void playRound(Game game) {
+        talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
+
+        String userWord = getExistingUserWord();
+        game.playRound(userWord);
+
+        writeRoundResult(game.isHiddenWordGuessed(), game.getHiddenWord(), userWord);
     }
 
     /**
@@ -62,7 +79,7 @@ public class UserInterface {
      * @param result     true if the user has won, false otherwise.
      * @param hiddenWord hidden word.
      */
-    public void writeGameResult(boolean result, String hiddenWord) {
+    private void writeGameResult(boolean result, String hiddenWord) {
         if (result) {
             talkWithUser(WINNER);
         } else {
@@ -71,17 +88,24 @@ public class UserInterface {
         }
     }
 
-    /**
-     * Writes the phrase about user's word according to the 'correct' parameter.
-     *
-     * @param correct  parameter to say for the current word, true for correct and false otherwise.
-     * @param userWord user's word.
-     */
-    public void writeIsUsersWordCorrect(boolean correct, String userWord) {
+    private void writeRoundResult(boolean correct, String hiddenWord, String userWord) {
         if (correct) {
             talkWithUser(String.format(CORRECT_WORD, userWord));
         } else {
             talkWithUser(String.format(WRONG_WORD, userWord));
+
+            Checker checker = new Checker(hiddenWord, userWord);
+            char[] userWordLetters = userWord.toUpperCase().toCharArray();
+
+            for (int i = 0; i < hiddenWord.length(); i++) {
+                char letter = userWordLetters[i];
+
+                if (checker.isLetterExistInTheHiddenWord(letter)) {
+                    writeLetterOnTheRightPlace(checker.isLetterOnTheRightPlace(i), letter);
+                } else {
+                    talkWithUser(String.format(LETTER_WRONG, letter));
+                }
+            }
         }
     }
 
@@ -91,7 +115,7 @@ public class UserInterface {
      * @param rightPlace true if the letter from the user's word is in the same place for the hidden word.
      * @param letter     letter from the user's word.
      */
-    public void writeLetterOnTheRightPlace(boolean rightPlace, char letter) {
+    private void writeLetterOnTheRightPlace(boolean rightPlace, char letter) {
         if (rightPlace) {
             talkWithUser(String.format(LETTER_CORRECT, letter));
         } else {
@@ -99,39 +123,28 @@ public class UserInterface {
         }
     }
 
-    /**
-     * Writes phrase that letter doesn't exist in the hidden word.
-     *
-     * @param letter letter from the user's word.
-     */
-    public void writeLetterNotExistInHiddenWord(char letter) {
-        talkWithUser(String.format(LETTER_WRONG, letter));
-    }
-
-    /**
-     * Writes the phrase about user's word does not exist in the dictionary.
-     *
-     * @param userWord user's word.
-     */
-    public void writeUsersWordNotExist(String userWord) {
-        talkWithUser(String.format(WORD_NOT_EXIST, userWord));
-    }
-
-    /**
-     * Writes the phrase for the user into the console.
-     *
-     * @param phrase to write into the console.
-     */
-    public void talkWithUser(String phrase) {
+    private void talkWithUser(String phrase) {
         System.out.println(phrase);
     }
 
     /**
-     * Asks the user to type a word and returns it.
+     * Returns a word which exists in the dictionary.
+     * If the user types an absent word it will ask for other word in a cycle.
+     *
+     * @return a word which exists in the dictionary.
      */
-    public String getUserWord() {
+    private String getExistingUserWord() {
         talkWithUser(ASK_TO_TYPE_WORD);
-        return getConsoleInput();
+        String userWord = getConsoleInput();
+        Checker checker = new Checker(userWord);
+
+        while (!checker.isUserWordExists()) {
+            talkWithUser(String.format(WORD_NOT_EXIST, userWord));
+            talkWithUser(ASK_TO_TYPE_WORD);
+            userWord = getConsoleInput();
+            checker.setUserWord(userWord);
+        }
+        return userWord;
     }
 
     private String getConsoleInput() {

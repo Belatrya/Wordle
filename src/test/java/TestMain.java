@@ -14,6 +14,7 @@ public class TestMain {
     private static final String WORDS_COUNT_MESSAGE = "words count: %d \n";
 
     public static void main(String[] args) {
+        UserInterface userInterface = new UserInterface();
         try {
             Dictionary dictionaryFileStorage = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
 
@@ -26,7 +27,6 @@ public class TestMain {
             }
 
             Game game = new Game();
-            game.startGame();
 
             Field hiddenWordField = game.getClass().getDeclaredField("hiddenWord");
             hiddenWordField.setAccessible(true);
@@ -34,11 +34,8 @@ public class TestMain {
 
             System.out.println(hiddenWord);
 
-            game.playGame();
+            userInterface.runGame(game);
 
-        } catch (DictionaryIsNotFoundException e) {
-            UserInterface userInterface = new UserInterface();
-            userInterface.talkWithUser(e.getMessage());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
