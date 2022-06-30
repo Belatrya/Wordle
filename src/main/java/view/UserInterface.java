@@ -44,7 +44,7 @@ public class UserInterface {
 
                 String userWord = getExistingUserWord();
                 game.playRound(userWord);
-                boolean gameResult = game.getGameWinningStatus();
+                boolean gameResult = game.isHiddenWordGuessed();
 
                 writeIsUsersWordCorrect(gameResult, userWord);
 
@@ -52,7 +52,7 @@ public class UserInterface {
                     writeWordDescriptionByLetters(game.getHiddenWord(), userWord);
                 }
             }
-            writeGameResult(game.getGameWinningStatus(), game.getHiddenWord());
+            writeGameResult(game.isHiddenWordGuessed(), game.getHiddenWord());
         } catch (DictionaryIsNotFoundException e) {
             talkWithUser(e.getMessage());
         }

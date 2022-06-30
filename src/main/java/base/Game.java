@@ -14,13 +14,13 @@ import java.util.Optional;
 public class Game {
     private static final int GAME_RULE_COUNT_OF_ROUNDS = 6;
     private String hiddenWord;
-    private boolean gameWon;
+    private boolean hiddenWordGuessed;
     private int currentRound;
     private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
 
     public Game() {
         hiddenWord = createHiddenWord();
-        gameWon = false;
+        hiddenWordGuessed = false;
         currentRound = 1;
     }
 
@@ -28,8 +28,8 @@ public class Game {
         return GAME_RULE_COUNT_OF_ROUNDS;
     }
 
-    public boolean getGameWinningStatus() {
-        return gameWon;
+    public boolean isHiddenWordGuessed() {
+        return hiddenWordGuessed;
     }
 
     public String getHiddenWord() {
@@ -45,7 +45,7 @@ public class Game {
      * @return true if the user have tries, false otherwise.
      */
     public boolean isUserHaveGameTries() {
-        return !gameWon && (currentRound <= GAME_RULE_COUNT_OF_ROUNDS);
+        return !hiddenWordGuessed && (currentRound <= GAME_RULE_COUNT_OF_ROUNDS);
     }
 
     private String createHiddenWord() {
@@ -69,7 +69,7 @@ public class Game {
     public void playRound(String userWord) {
         Checker checker = new Checker(hiddenWord, userWord);
 
-        gameWon = checker.areWordsEqual();
+        hiddenWordGuessed = checker.areWordsEqual();
         currentRound++;
     }
 }
