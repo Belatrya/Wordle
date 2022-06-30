@@ -37,9 +37,7 @@ public class UserInterface {
 
     public void runGame(Game game) {
         try {
-            talkWithUser(GREETING_USER);
             writeGameRules(game.getGameRuleCountOfRounds());
-            talkWithUser(GOOD_LUCK);
 
             while (game.isUserHaveGameTries()) {
                 talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
@@ -61,12 +59,14 @@ public class UserInterface {
     }
 
     private void writeGameRules(int ruleCountOfRounds) {
+        talkWithUser(GREETING_USER);
         talkWithUser(String.format(RULES_LETTERS_ROUNDS, ruleCountOfRounds));
         talkWithUser(RULES_GUESSING);
         talkWithUser(RULES_LETTERS_DESCRIBING);
         talkWithUser(RULES_LETTER_NOT_EXIST);
         talkWithUser(RULES_LETTER_NOT_ON_THE_RIGHT_PLACE);
         talkWithUser(RULES_LETTER_ON_THE_RIGHT_PLACE);
+        talkWithUser(GOOD_LUCK);
     }
 
     /**
