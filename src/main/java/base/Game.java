@@ -44,7 +44,7 @@ public class Game {
      * Returns true if the game is not won yet and if user's attempts have not ended.
      * @return true if the user have tries, false otherwise.
      */
-    public boolean isUserHaveGameTries() {
+    public boolean doesUserHaveGameTries() {
         return !hiddenWordGuessed && (currentRound <= GAME_RULE_COUNT_OF_ROUNDS);
     }
 
@@ -54,7 +54,7 @@ public class Game {
 
         Optional<String> hiddenWord = dictionary.getWord(randomIndex);
         if (hiddenWord.isPresent()) {
-            return hiddenWord.get();
+            return hiddenWord.get().toUpperCase();
         } else {
             throw new DictionaryIsNotFoundException(CREATING_HIDDEN_WORD_EXCEPTION);
         }

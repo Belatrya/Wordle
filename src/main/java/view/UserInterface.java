@@ -39,18 +39,13 @@ public class UserInterface {
         try {
             writeGameRules(game.getGameRuleCountOfRounds());
 
-            while (game.isUserHaveGameTries()) {
+            while (game.doesUserHaveGameTries()) {
                 talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
 
                 String userWord = getExistingUserWord();
                 game.playRound(userWord);
-                boolean gameResult = game.isHiddenWordGuessed();
 
-                writeIsUsersWordCorrect(gameResult, userWord);
-
-                if (!gameResult) {
-                    writeWordDescriptionByLetters(game.getHiddenWord(), userWord);
-                }
+                writeRoundResult(game.isHiddenWordGuessed(), game.getHiddenWord(), userWord);
             }
             writeGameResult(game.isHiddenWordGuessed(), game.getHiddenWord());
         } catch (DictionaryIsNotFoundException e) {
@@ -84,25 +79,23 @@ public class UserInterface {
         }
     }
 
-    private void writeIsUsersWordCorrect(boolean correct, String userWord) {
+    private void writeRoundResult(boolean correct, String hiddenWord, String userWord) {
         if (correct) {
             talkWithUser(String.format(CORRECT_WORD, userWord));
         } else {
             talkWithUser(String.format(WRONG_WORD, userWord));
-        }
-    }
 
-    private void writeWordDescriptionByLetters(String hiddenWord, String userWord) {
-        Checker checker = new Checker(hiddenWord, userWord);
-        char[] userWordLetters = userWord.toUpperCase().toCharArray();
+            Checker checker = new Checker(hiddenWord, userWord);
+            char[] userWordLetters = userWord.toUpperCase().toCharArray();
 
-        for (int i = 0; i < hiddenWord.length(); i++) {
-            char letter = userWordLetters[i];
+            for (int i = 0; i < hiddenWord.length(); i++) {
+                char letter = userWordLetters[i];
 
-            if (checker.isLetterExistInTheHiddenWord(letter)) {
-                writeLetterOnTheRightPlace(checker.isLetterOnTheRightPlace(i), letter);
-            } else {
-                talkWithUser(String.format(LETTER_WRONG, letter));
+                if (checker.isLetterExistInTheHiddenWord(letter)) {
+                    writeLetterOnTheRightPlace(checker.isLetterOnTheRightPlace(i), letter);
+                } else {
+                    talkWithUser(String.format(LETTER_WRONG, letter));
+                }
             }
         }
     }
