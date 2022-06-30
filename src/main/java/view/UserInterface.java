@@ -40,12 +40,7 @@ public class UserInterface {
             writeGameRules(game.getGameRuleCountOfRounds());
 
             while (game.doesUserHaveGameTries()) {
-                talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
-
-                String userWord = getExistingUserWord();
-                game.playRound(userWord);
-
-                writeRoundResult(game.isHiddenWordGuessed(), game.getHiddenWord(), userWord);
+                playRound(game);
             }
             writeGameResult(game.isHiddenWordGuessed(), game.getHiddenWord());
         } catch (DictionaryIsNotFoundException e) {
@@ -62,6 +57,15 @@ public class UserInterface {
         talkWithUser(RULES_LETTER_NOT_ON_THE_RIGHT_PLACE);
         talkWithUser(RULES_LETTER_ON_THE_RIGHT_PLACE);
         talkWithUser(GOOD_LUCK);
+    }
+
+    private void playRound(Game game) {
+        talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
+
+        String userWord = getExistingUserWord();
+        game.playRound(userWord);
+
+        writeRoundResult(game.isHiddenWordGuessed(), game.getHiddenWord(), userWord);
     }
 
     /**

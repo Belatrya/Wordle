@@ -42,6 +42,7 @@ public class Game {
 
     /**
      * Returns true if the game is not won yet and if user's attempts have not ended.
+     *
      * @return true if the user have tries, false otherwise.
      */
     public boolean doesUserHaveGameTries() {
