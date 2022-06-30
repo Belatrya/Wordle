@@ -41,7 +41,7 @@ public class Checker {
      */
     public boolean isLetterOnTheRightPlace(int letterIndex, String hiddenWord, String userWord) {
         char userWordLetter = userWord.toUpperCase().charAt(letterIndex);
-        char hiddenWordLetter = hiddenWord.toUpperCase().charAt(letterIndex);
+        char hiddenWordLetter = hiddenWord.charAt(letterIndex);
         return userWordLetter == hiddenWordLetter;
     }
 

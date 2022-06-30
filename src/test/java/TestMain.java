@@ -2,7 +2,6 @@ import base.WordleFactory;
 import model.Dictionary;
 import model.DictionaryFileStorage;
 import model.DictionaryType;
-import model.exceptions.DictionaryIsNotFoundException;
 import view.UserInterface;
 
 import java.util.Optional;
@@ -15,22 +14,18 @@ public class TestMain {
     public static void main(String[] args) {
         WordleFactory wordleFactory = new WordleFactory();
         UserInterface userInterface = wordleFactory.createApp();
-        try {
-            Dictionary dictionaryFileStorage = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
 
-            int wordsCount = dictionaryFileStorage.getWordsCount();
-            System.out.printf(WORDS_COUNT_MESSAGE, wordsCount);
+        Dictionary dictionaryFileStorage = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
 
-            int[] testLines = new int[]{357, 0, 1, wordsCount, wordsCount + 1};
-            for (int line : testLines) {
-                checkWordPresentsTest(dictionaryFileStorage, line);
-            }
+        int wordsCount = dictionaryFileStorage.getWordsCount();
+        System.out.printf(WORDS_COUNT_MESSAGE, wordsCount);
 
-            userInterface.runGame();
-
-        } catch (DictionaryIsNotFoundException e) {
-            userInterface.talkWithUser(e.getMessage());
+        int[] testLines = new int[]{357, 0, 1, wordsCount, wordsCount + 1};
+        for (int line : testLines) {
+            checkWordPresentsTest(dictionaryFileStorage, line);
         }
+
+        userInterface.runGame();
     }
 
     private static void checkWordPresentsTest(Dictionary dictionary, int line) {

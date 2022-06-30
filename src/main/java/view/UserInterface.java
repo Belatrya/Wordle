@@ -2,6 +2,7 @@ package view;
 
 import base.Checker;
 import base.Game;
+import model.exceptions.DictionaryIsNotFoundException;
 
 import java.io.Console;
 import java.util.Scanner;
@@ -45,72 +46,67 @@ public class UserInterface {
      * Represents the dialog with user at the time of the game process.
      */
     public void runGame() {
-        talkWithUser(GREETING_USER);
-        writeGameRules(game.getGameRuleCountOfRounds());
-        talkWithUser(GOOD_LUCK);
-        String hiddenWord = game.getHiddenWord();
-        String userWord;
+        try {
+            writeGameRules();
 
-        while (game.isUserHaveGameTries()) {
-            talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
-
-            userWord = getExistingUserWord();
-
-            boolean gameResult = checker.isHiddenEqualsToUserWord(hiddenWord, userWord);
-
-            writeIsUsersWordCorrect(gameResult, userWord);
-
-            if (!gameResult) {
-                writeWordDescriptionByLetters(hiddenWord, userWord);
+            while (game.doesUserHaveGameTries()) {
+                playRound();
             }
-            game.increaseRoundsPlayed();
-            game.setGameWinningStatus(gameResult);
+            writeGameResult();
+        } catch (DictionaryIsNotFoundException e) {
+            talkWithUser(e.getMessage());
         }
-        writeGameResult(game.getGameWinningStatus(), hiddenWord);
     }
 
-    private void writeGameRules(int ruleCountOfRounds) {
-        talkWithUser(String.format(RULES_LETTERS_ROUNDS, ruleCountOfRounds));
+    private void writeGameRules() {
+        talkWithUser(GREETING_USER);
+        talkWithUser(String.format(RULES_LETTERS_ROUNDS, game.getGameRuleCountOfRounds()));
         talkWithUser(RULES_GUESSING);
         talkWithUser(RULES_LETTERS_DESCRIBING);
         talkWithUser(RULES_LETTER_NOT_EXIST);
         talkWithUser(RULES_LETTER_NOT_ON_THE_RIGHT_PLACE);
         talkWithUser(RULES_LETTER_ON_THE_RIGHT_PLACE);
+        talkWithUser(GOOD_LUCK);
+    }
+
+    private void playRound() {
+        talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
+
+        String userWord = getExistingUserWord();
+        game.setHiddenWordGuessed(checker.isHiddenEqualsToUserWord(game.getHiddenWord(), userWord));
+        game.increaseRoundsPlayed();
+
+        writeRoundResult(userWord);
     }
 
     /**
      * Writes the phrase about the game result. If the user lost the game it writes the hidden word.
-     *
-     * @param result     true if the user has won, false otherwise.
-     * @param hiddenWord hidden word.
      */
-    private void writeGameResult(boolean result, String hiddenWord) {
-        if (result) {
+    private void writeGameResult() {
+        if (game.isHiddenWordGuessed()) {
             talkWithUser(WINNER);
         } else {
             talkWithUser(LOSER);
-            talkWithUser(String.format(HIDDEN_WORD, hiddenWord));
+            talkWithUser(String.format(HIDDEN_WORD, game.getHiddenWord()));
         }
     }
 
-    private void writeIsUsersWordCorrect(boolean correct, String userWord) {
-        if (correct) {
+    private void writeRoundResult(String userWord) {
+        if (game.isHiddenWordGuessed()) {
             talkWithUser(String.format(CORRECT_WORD, userWord));
         } else {
             talkWithUser(String.format(WRONG_WORD, userWord));
-        }
-    }
+            char[] userWordLetters = userWord.toUpperCase().toCharArray();
 
-    private void writeWordDescriptionByLetters(String hiddenWord, String userWord) {
-        char[] userWordLetters = userWord.toUpperCase().toCharArray();
+            for (int i = 0; i < game.getHiddenWord().length(); i++) {
+                char letter = userWordLetters[i];
 
-        for (int i = 0; i < hiddenWord.length(); i++) {
-            char letter = userWordLetters[i];
-
-            if (checker.isLetterExistInTheHiddenWord(letter, hiddenWord)) {
-                writeLetterOnTheRightPlace(checker.isLetterOnTheRightPlace(i, hiddenWord, userWord), letter);
-            } else {
-                talkWithUser(String.format(LETTER_WRONG, letter));
+                if (checker.isLetterExistInTheHiddenWord(letter, game.getHiddenWord())) {
+                    boolean rightPlace = checker.isLetterOnTheRightPlace(i, game.getHiddenWord(), userWord);
+                    writeLetterOnTheRightPlace(rightPlace, letter);
+                } else {
+                    talkWithUser(String.format(LETTER_WRONG, letter));
+                }
             }
         }
     }
@@ -129,7 +125,7 @@ public class UserInterface {
         }
     }
 
-    public void talkWithUser(String phrase) {
+    private void talkWithUser(String phrase) {
         System.out.println(phrase);
     }
 

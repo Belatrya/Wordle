@@ -6,13 +6,13 @@ import model.exceptions.DictionaryIsNotFoundException;
 import java.util.Optional;
 
 /**
- * Represents the game process.
+ * Represents a Wordle game exemplar.
  * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
 public class Game {
     private static final int GAME_RULE_COUNT_OF_ROUNDS = 6;
     private String hiddenWord;
-    private boolean gameWon;
+    private boolean hiddenWordGuessed;
     private int currentRound;
     private Dictionary hiddenWordDictionary;
     private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
@@ -20,7 +20,7 @@ public class Game {
     public Game(Dictionary hiddenWordDictionary) {
         this.hiddenWordDictionary = hiddenWordDictionary;
         hiddenWord = createHiddenWord();
-        gameWon = false;
+        hiddenWordGuessed = false;
         currentRound = 1;
     }
 
@@ -28,12 +28,12 @@ public class Game {
         return GAME_RULE_COUNT_OF_ROUNDS;
     }
 
-    public boolean getGameWinningStatus() {
-        return gameWon;
+    public boolean isHiddenWordGuessed() {
+        return hiddenWordGuessed;
     }
 
-    public void setGameWinningStatus(boolean gameWon) {
-        this.gameWon = gameWon;
+    public void setHiddenWordGuessed(boolean hiddenWordGuessed) {
+        this.hiddenWordGuessed = hiddenWordGuessed;
     }
 
     public String getHiddenWord() {
@@ -49,8 +49,8 @@ public class Game {
      *
      * @return true if the user have tries, false otherwise.
      */
-    public boolean isUserHaveGameTries() {
-        return !gameWon && (currentRound <= GAME_RULE_COUNT_OF_ROUNDS);
+    public boolean doesUserHaveGameTries() {
+        return !hiddenWordGuessed && (currentRound <= GAME_RULE_COUNT_OF_ROUNDS);
     }
 
     private String createHiddenWord() {
@@ -58,7 +58,7 @@ public class Game {
 
         Optional<String> hiddenWord = hiddenWordDictionary.getWord(randomIndex);
         if (hiddenWord.isPresent()) {
-            return hiddenWord.get();
+            return hiddenWord.get().toUpperCase();
         } else {
             throw new DictionaryIsNotFoundException(CREATING_HIDDEN_WORD_EXCEPTION);
         }
