@@ -8,7 +8,7 @@ import model.exceptions.DictionaryIsNotFoundException;
 import java.util.Optional;
 
 /**
- * Represents the game process.
+ * Represents a Wordle game exemplar.
  * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
 public class Game {

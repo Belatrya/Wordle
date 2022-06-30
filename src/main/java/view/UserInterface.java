@@ -35,6 +35,11 @@ public class UserInterface {
             " - CORRECT - letter exists and is on the right place";
     private static final String GOOD_LUCK = "Let's start and good luck!";
 
+    /**
+     * Represents the game process with user.
+     *
+     * @param game an exemplar of the game to play with.
+     */
     public void runGame(Game game) {
         try {
             writeGameRules(game.getGameRuleCountOfRounds());
