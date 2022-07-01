@@ -1,11 +1,9 @@
-import base.Game;
+import base.WordleFactory;
 import model.Dictionary;
 import model.DictionaryFileStorage;
 import model.DictionaryType;
-import model.exceptions.DictionaryIsNotFoundException;
 import view.UserInterface;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 public class TestMain {
@@ -14,31 +12,20 @@ public class TestMain {
     private static final String WORDS_COUNT_MESSAGE = "words count: %d \n";
 
     public static void main(String[] args) {
-        UserInterface userInterface = new UserInterface();
-        try {
-            Dictionary dictionaryFileStorage = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
+        WordleFactory wordleFactory = new WordleFactory();
+        UserInterface userInterface = wordleFactory.createApp();
 
-            int wordsCount = dictionaryFileStorage.getWordsCount();
-            System.out.printf(WORDS_COUNT_MESSAGE, wordsCount);
+        Dictionary dictionaryFileStorage = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
 
-            int[] testLines = new int[]{357, 0, 1, wordsCount, wordsCount + 1};
-            for (int line : testLines) {
-                checkWordPresentsTest(dictionaryFileStorage, line);
-            }
+        int wordsCount = dictionaryFileStorage.getWordsCount();
+        System.out.printf(WORDS_COUNT_MESSAGE, wordsCount);
 
-            Game game = new Game();
-
-            Field hiddenWordField = game.getClass().getDeclaredField("hiddenWord");
-            hiddenWordField.setAccessible(true);
-            String hiddenWord = (String) hiddenWordField.get(game);
-
-            System.out.println(hiddenWord);
-
-            userInterface.runGame(game);
-
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+        int[] testLines = new int[]{357, 0, 1, wordsCount, wordsCount + 1};
+        for (int line : testLines) {
+            checkWordPresentsTest(dictionaryFileStorage, line);
         }
+
+        userInterface.runGame();
     }
 
     private static void checkWordPresentsTest(Dictionary dictionary, int line) {
