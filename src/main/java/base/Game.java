@@ -2,6 +2,10 @@ package base;
 
 import model.Dictionary;
 import model.exceptions.DictionaryIsNotFoundException;
+import model.gamestates.InProcess;
+import model.gamestates.Lost;
+import model.gamestates.State;
+import model.gamestates.Won;
 
 import java.util.Optional;
 
@@ -12,28 +16,39 @@ import java.util.Optional;
 public class Game {
     private static final int GAME_RULE_COUNT_OF_ROUNDS = 6;
     private String hiddenWord;
-    private boolean hiddenWordGuessed;
     private int currentRound;
     private Dictionary hiddenWordDictionary;
     private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
+    private final State won = new Won();
+    private final State inProcess = new InProcess();
+    private final State lost = new Lost();
+    private State gameState;
 
     public Game(Dictionary hiddenWordDictionary) {
         this.hiddenWordDictionary = hiddenWordDictionary;
         hiddenWord = createHiddenWord();
-        hiddenWordGuessed = false;
         currentRound = 1;
+        gameState = inProcess;
+    }
+
+    public State getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(State gameState) {
+        this.gameState = gameState;
+    }
+
+    public State getWon() {
+        return won;
+    }
+
+    public State getLost() {
+        return lost;
     }
 
     public int getGameRuleCountOfRounds() {
         return GAME_RULE_COUNT_OF_ROUNDS;
-    }
-
-    public boolean isHiddenWordGuessed() {
-        return hiddenWordGuessed;
-    }
-
-    public void setHiddenWordGuessed(boolean hiddenWordGuessed) {
-        this.hiddenWordGuessed = hiddenWordGuessed;
     }
 
     public String getHiddenWord() {
@@ -45,12 +60,12 @@ public class Game {
     }
 
     /**
-     * Returns true if the game is not won yet and if user's attempts have not ended.
+     * Returns true if user's attempts have not ended.
      *
      * @return true if the user have tries, false otherwise.
      */
     public boolean doesUserHaveGameTries() {
-        return !isHiddenWordGuessed() && (getCurrentRound() <= getGameRuleCountOfRounds());
+        return getCurrentRound() <= getGameRuleCountOfRounds();
     }
 
     private String createHiddenWord() {
@@ -69,5 +84,14 @@ public class Game {
      */
     public void increaseRoundsPlayed() {
         currentRound++;
+    }
+
+    /**
+     * Represents one game round.
+     *
+     * @param hiddenWordGuessed shows user's word equals to hidden word.
+     */
+    public void playRound(boolean hiddenWordGuessed) {
+        getGameState().playRound(this, hiddenWordGuessed);
     }
 }
