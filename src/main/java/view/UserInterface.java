@@ -3,8 +3,6 @@ package view;
 import base.Checker;
 import base.Game;
 import model.exceptions.DictionaryIsNotFoundException;
-import model.gamestates.InProcess;
-import model.gamestates.Won;
 
 import java.io.Console;
 import java.util.Scanner;
@@ -55,7 +53,7 @@ public class UserInterface {
         try {
             writeGameRules();
 
-            while (game.getGameState() instanceof InProcess) {
+            while (!game.getGameState().isGameEnd()) {
                 playRound();
             }
             writeGameResult();
@@ -88,7 +86,7 @@ public class UserInterface {
      * Writes the phrase about the game result. If the user lost the game it writes the hidden word.
      */
     private void writeGameResult() {
-        if (game.getGameState() instanceof Won) {
+        if (game.getGameState().isGameWon()) {
             talkWithUser(WINNER);
         } else {
             talkWithUser(LOSER);
@@ -97,7 +95,7 @@ public class UserInterface {
     }
 
     private void writeRoundResult(String userWord) {
-        if (game.getGameState() instanceof Won) {
+        if (game.getGameState().isGameWon()) {
             talkWithUser(String.format(CORRECT_WORD, userWord));
         } else {
             talkWithUser(String.format(WRONG_WORD, userWord));

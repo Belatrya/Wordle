@@ -2,10 +2,8 @@ package base;
 
 import model.Dictionary;
 import model.exceptions.DictionaryIsNotFoundException;
-import model.gamestates.InProcess;
-import model.gamestates.Lost;
 import model.gamestates.State;
-import model.gamestates.Won;
+import model.gamestates.StateFactory;
 
 import java.util.Optional;
 
@@ -19,16 +17,15 @@ public class Game {
     private int currentRound;
     private Dictionary hiddenWordDictionary;
     private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
-    private final State won = new Won();
-    private final State inProcess = new InProcess();
-    private final State lost = new Lost();
+    private StateFactory stateFactory;
     private State gameState;
 
-    public Game(Dictionary hiddenWordDictionary) {
+    public Game(Dictionary hiddenWordDictionary, StateFactory stateFactory) {
         this.hiddenWordDictionary = hiddenWordDictionary;
         hiddenWord = createHiddenWord();
         currentRound = 1;
-        gameState = inProcess;
+        this.stateFactory = stateFactory;
+        gameState = stateFactory.createStateInProcess();
     }
 
     public State getGameState() {
@@ -40,11 +37,11 @@ public class Game {
     }
 
     public State getWon() {
-        return won;
+        return stateFactory.createStateWon();
     }
 
     public State getLost() {
-        return lost;
+        return stateFactory.createStateLost();
     }
 
     public int getGameRuleCountOfRounds() {
