@@ -3,6 +3,7 @@ package base;
 import model.Dictionary;
 import model.DictionaryFileStorage;
 import model.DictionaryType;
+import model.gamestates.StateFactory;
 import view.UserInterface;
 
 /**
@@ -13,7 +14,8 @@ public class WordleFactory {
         Dictionary allWordsDictionary = createAllWordsDictionary();
         Dictionary hiddenWordsDictionary = createHiddenWordsDictionary();
         Checker checker = createChecker(allWordsDictionary);
-        Game game = createGame(hiddenWordsDictionary);
+        StateFactory stateFactory = createStateFactory();
+        Game game = createGame(hiddenWordsDictionary, stateFactory);
 
         return new UserInterface(game, checker);
     }
@@ -30,7 +32,11 @@ public class WordleFactory {
         return new Checker(dictionary);
     }
 
-    private Game createGame(Dictionary dictionary) {
-        return new Game(dictionary);
+    private Game createGame(Dictionary dictionary, StateFactory stateFactory) {
+        return new Game(dictionary, stateFactory);
+    }
+
+    private StateFactory createStateFactory() {
+        return new StateFactory();
     }
 }

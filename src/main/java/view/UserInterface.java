@@ -53,7 +53,7 @@ public class UserInterface {
         try {
             writeGameRules();
 
-            while (game.doesUserHaveGameTries()) {
+            while (!game.getGameState().isGameEnd()) {
                 playRound();
             }
             writeGameResult();
@@ -77,8 +77,7 @@ public class UserInterface {
         talkWithUser(String.format(ROUND_STARTED, game.getCurrentRound()));
 
         String userWord = getExistingUserWord();
-        game.setHiddenWordGuessed(checker.isHiddenEqualsToUserWord(getHiddenWord(), userWord));
-        game.increaseRoundsPlayed();
+        game.playRound(checker.isHiddenEqualsToUserWord(getHiddenWord(), userWord));
 
         writeRoundResult(userWord);
     }
@@ -87,7 +86,7 @@ public class UserInterface {
      * Writes the phrase about the game result. If the user lost the game it writes the hidden word.
      */
     private void writeGameResult() {
-        if (game.isHiddenWordGuessed()) {
+        if (game.getGameState().isGameWon()) {
             talkWithUser(WINNER);
         } else {
             talkWithUser(LOSER);
@@ -96,7 +95,7 @@ public class UserInterface {
     }
 
     private void writeRoundResult(String userWord) {
-        if (game.isHiddenWordGuessed()) {
+        if (game.getGameState().isGameWon()) {
             talkWithUser(String.format(CORRECT_WORD, userWord));
         } else {
             talkWithUser(String.format(WRONG_WORD, userWord));
