@@ -1,7 +1,7 @@
-import base.WordleFactory;
+import base.Game;
 import model.Dictionary;
-import model.DictionaryFileStorage;
-import model.DictionaryType;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import view.UserInterface;
 
 import java.util.Optional;
@@ -12,10 +12,10 @@ public class TestMain {
     private static final String WORDS_COUNT_MESSAGE = "words count: %d \n";
 
     public static void main(String[] args) {
-        WordleFactory wordleFactory = new WordleFactory();
-        UserInterface userInterface = wordleFactory.createApp();
+        ApplicationContext context = new AnnotationConfigApplicationContext(ConfigurationContext.class);
+        UserInterface userInterface = context.getBean(UserInterface.class);
 
-        Dictionary dictionaryFileStorage = new DictionaryFileStorage(DictionaryType.ALL_WORDS);
+        Dictionary dictionaryFileStorage = (Dictionary) context.getBean("allWordsDictionary");
 
         int wordsCount = dictionaryFileStorage.getWordsCount();
         System.out.printf(WORDS_COUNT_MESSAGE, wordsCount);
@@ -24,6 +24,9 @@ public class TestMain {
         for (int line : testLines) {
             checkWordPresentsTest(dictionaryFileStorage, line);
         }
+
+        Game game = context.getBean(Game.class);
+        System.out.println(game.getHiddenWord());
 
         userInterface.runGame();
     }
