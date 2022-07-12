@@ -1,3 +1,5 @@
+package base;
+
 import model.Dictionary;
 import model.DictionaryFileStorage;
 import org.springframework.beans.factory.annotation.Value;

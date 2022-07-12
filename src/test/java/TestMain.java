@@ -1,3 +1,4 @@
+import base.ConfigurationContext;
 import base.Game;
 import model.Dictionary;
 import org.springframework.context.ApplicationContext;
