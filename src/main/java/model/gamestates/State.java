@@ -9,10 +9,9 @@ public interface State {
     /**
      * Represents game round depends on the game's state.
      *
-     * @param game              to play round.
-     * @param hiddenWordGuessed shows is hidden word guessed.
+     * @param game to play round.
      */
-    void playRound(Game game, boolean hiddenWordGuessed);
+    void playRound(Game game);
 
     /**
      * Returns true if the game is over.

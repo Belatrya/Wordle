@@ -2,8 +2,10 @@ package base;
 
 import model.Dictionary;
 import model.exceptions.DictionaryIsNotFoundException;
+import model.gamestates.InProcess;
+import model.gamestates.Lost;
 import model.gamestates.State;
-import model.gamestates.StateFactory;
+import model.gamestates.Won;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,32 +23,34 @@ public class Game {
     private int currentRound;
     private Dictionary hiddenWordDictionary;
     private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
-    private StateFactory stateFactory;
     private State gameState;
+    @Autowired
+    private Won won;
+    @Autowired
+    private Lost lost;
 
     @Autowired
-    public Game(@Value("#{hiddenWordsDictionary}") Dictionary hiddenWordDictionary, StateFactory stateFactory) {
+    public Game(@Value("#{hiddenWordsDictionary}") Dictionary hiddenWordDictionary, InProcess initialState) {
         this.hiddenWordDictionary = hiddenWordDictionary;
         hiddenWord = createHiddenWord();
         currentRound = 1;
-        this.stateFactory = stateFactory;
-        gameState = stateFactory.createStateInProcess();
+        setGameState(initialState);
     }
 
     public State getGameState() {
         return gameState;
     }
 
-    public void setGameState(State gameState) {
+    private void setGameState(State gameState) {
         this.gameState = gameState;
     }
 
-    public State getWon() {
-        return stateFactory.createStateWon();
+    private State getWon() {
+        return won;
     }
 
-    public State getLost() {
-        return stateFactory.createStateLost();
+    private State getLost() {
+        return lost;
     }
 
     public int getGameRuleCountOfRounds() {
@@ -66,7 +70,7 @@ public class Game {
      *
      * @return true if the user have tries, false otherwise.
      */
-    public boolean doesUserHaveGameTries() {
+    private boolean doesUserHaveGameTries() {
         return getCurrentRound() <= getGameRuleCountOfRounds();
     }
 
@@ -94,6 +98,12 @@ public class Game {
      * @param hiddenWordGuessed shows user's word equals to hidden word.
      */
     public void playRound(boolean hiddenWordGuessed) {
-        getGameState().playRound(this, hiddenWordGuessed);
+        getGameState().playRound(this);
+
+        if (hiddenWordGuessed) {
+            setGameState(getWon());
+        } else if (!doesUserHaveGameTries()) {
+            setGameState(getLost());
+        }
     }
 }

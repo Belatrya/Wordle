@@ -1,26 +1,21 @@
 package model.gamestates;
 
 import base.Game;
+import org.springframework.stereotype.Component;
 
 /**
  * Represents the game in "in process" state.
  */
+@Component
 public class InProcess implements State {
     /**
      * Increased count of played rounds and changed game state if it's needed.
      *
-     * @param game              to play round.
-     * @param hiddenWordGuessed shows is hidden word guessed.
+     * @param game to play round.
      */
     @Override
-    public void playRound(Game game, boolean hiddenWordGuessed) {
+    public void playRound(Game game) {
         game.increaseRoundsPlayed();
-
-        if (hiddenWordGuessed) {
-            game.setGameState(game.getWon());
-        } else if (!game.doesUserHaveGameTries()) {
-            game.setGameState(game.getLost());
-        }
     }
 
     /**

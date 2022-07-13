@@ -1,19 +1,20 @@
 package model.gamestates;
 
 import base.Game;
+import org.springframework.stereotype.Component;
 
 /**
  * Represents the game in the "lost" state.
  */
+@Component
 public class Lost implements State {
     /**
      * There is nothing to play if the game has been already lost.
      *
-     * @param game              to play round.
-     * @param hiddenWordGuessed shows is hidden word guessed.
+     * @param game to play round.
      */
     @Override
-    public void playRound(Game game, boolean hiddenWordGuessed) {
+    public void playRound(Game game) {
     }
 
     /**

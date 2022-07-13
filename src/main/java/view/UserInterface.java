@@ -4,7 +4,6 @@ import base.Checker;
 import base.Game;
 import model.exceptions.DictionaryIsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.Console;
