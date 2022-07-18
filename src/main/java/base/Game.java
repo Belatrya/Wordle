@@ -1,5 +1,7 @@
 package base;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.Dictionary;
 import model.exceptions.DictionaryIsNotFoundException;
 import model.gamestates.InProcess;
@@ -19,14 +21,17 @@ import java.util.Optional;
 @Component
 public class Game {
     private static final int GAME_RULE_COUNT_OF_ROUNDS = 6;
+    @Getter
     private String hiddenWord;
+    @Getter
     private int currentRound;
     private Dictionary hiddenWordDictionary;
     private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
+    @Getter @Setter
     private State gameState;
-    @Autowired
+    @Autowired @Getter
     private Won won;
-    @Autowired
+    @Autowired @Getter
     private Lost lost;
 
     public Game(@Qualifier("hiddenWordsDictionary") Dictionary hiddenWordDictionary, InProcess initialState) {
@@ -36,32 +41,8 @@ public class Game {
         setGameState(initialState);
     }
 
-    public State getGameState() {
-        return gameState;
-    }
-
-    private void setGameState(State gameState) {
-        this.gameState = gameState;
-    }
-
-    private State getWon() {
-        return won;
-    }
-
-    private State getLost() {
-        return lost;
-    }
-
     public int getGameRuleCountOfRounds() {
         return GAME_RULE_COUNT_OF_ROUNDS;
-    }
-
-    public String getHiddenWord() {
-        return hiddenWord;
-    }
-
-    public int getCurrentRound() {
-        return currentRound;
     }
 
     /**
