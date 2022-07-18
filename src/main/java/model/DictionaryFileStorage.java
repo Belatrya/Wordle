@@ -1,5 +1,6 @@
 package model;
 
+import lombok.Getter;
 import model.exceptions.DictionaryIsNotFoundException;
 
 import java.io.IOException;
@@ -13,7 +14,9 @@ import java.util.Scanner;
  * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
 public class DictionaryFileStorage implements Dictionary {
+    @Getter
     private Path dictionaryPath;
+    @Getter
     private int wordsCount;
     private static final String EMPTY_FILE_EXCEPTION = "The dictionary file is empty!";
 
@@ -28,20 +31,10 @@ public class DictionaryFileStorage implements Dictionary {
         }
     }
 
-    /**
-     * Returns a count of all words in the dictionary.
-     *
-     * @return count of words.
-     */
-    @Override
-    public int getWordsCount() {
-        return wordsCount;
-    }
-
     private int countWords() {
         int count = 0;
 
-        try (Scanner scanner = new Scanner(dictionaryPath, StandardCharsets.UTF_8)) {
+        try (Scanner scanner = new Scanner(getDictionaryPath(), StandardCharsets.UTF_8)) {
             while (scanner.hasNextLine()) {
                 count++;
                 scanner.nextLine();
@@ -63,7 +56,7 @@ public class DictionaryFileStorage implements Dictionary {
     public Optional<String> getWord(int lineNumber) {
         if ((lineNumber <= wordsCount) && (lineNumber > 0)) {
 
-            try (Scanner scanner = new Scanner(dictionaryPath, StandardCharsets.UTF_8)) {
+            try (Scanner scanner = new Scanner(getDictionaryPath(), StandardCharsets.UTF_8)) {
                 for (int i = 1; i < lineNumber; i++) {
                     scanner.nextLine();
                 }
@@ -83,7 +76,7 @@ public class DictionaryFileStorage implements Dictionary {
      */
     @Override
     public boolean isExists(String word) {
-        try (Scanner scanner = new Scanner(dictionaryPath, StandardCharsets.UTF_8)) {
+        try (Scanner scanner = new Scanner(getDictionaryPath(), StandardCharsets.UTF_8)) {
             while (scanner.hasNext()) {
                 if (scanner.nextLine().equalsIgnoreCase(word)) {
                     return true;
