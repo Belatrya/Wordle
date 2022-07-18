@@ -21,10 +21,7 @@ public class Checker {
      * @return true if the user's word equals to the hidden word, false otherwise.
      */
     public boolean isHiddenEqualsToUserWord(String hiddenWord, String userWord) {
-        if (hiddenWord.equalsIgnoreCase(userWord)) {
-            return true;
-        }
-        return false;
+        return hiddenWord.equalsIgnoreCase(userWord);
     }
 
     /**
