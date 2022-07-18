@@ -7,8 +7,8 @@ import model.gamestates.Lost;
 import model.gamestates.State;
 import model.gamestates.Won;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
  * Represents a Wordle game exemplar.
  * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
-@Controller
+@Component
 public class Game {
     private static final int GAME_RULE_COUNT_OF_ROUNDS = 6;
     private String hiddenWord;
@@ -29,8 +29,7 @@ public class Game {
     @Autowired
     private Lost lost;
 
-    @Autowired
-    public Game(@Value("#{hiddenWordsDictionary}") Dictionary hiddenWordDictionary, InProcess initialState) {
+    public Game(@Qualifier("hiddenWordsDictionary") Dictionary hiddenWordDictionary, InProcess initialState) {
         this.hiddenWordDictionary = hiddenWordDictionary;
         hiddenWord = createHiddenWord();
         currentRound = 1;
