@@ -4,6 +4,9 @@ import model.Dictionary;
 import model.exceptions.DictionaryIsNotFoundException;
 import model.gamestates.State;
 import model.gamestates.StateFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 
 import java.util.Optional;
 
@@ -11,6 +14,7 @@ import java.util.Optional;
  * Represents a Wordle game exemplar.
  * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
+@Controller
 public class Game {
     private static final int GAME_RULE_COUNT_OF_ROUNDS = 6;
     private String hiddenWord;
@@ -20,7 +24,8 @@ public class Game {
     private StateFactory stateFactory;
     private State gameState;
 
-    public Game(Dictionary hiddenWordDictionary, StateFactory stateFactory) {
+    @Autowired
+    public Game(@Value("#{hiddenWordsDictionary}") Dictionary hiddenWordDictionary, StateFactory stateFactory) {
         this.hiddenWordDictionary = hiddenWordDictionary;
         hiddenWord = createHiddenWord();
         currentRound = 1;

@@ -1,12 +1,12 @@
-import base.WordleFactory;
-import org.springframework.context.annotation.Configuration;
+import base.ConfigurationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import view.UserInterface;
 
-@Configuration
 public class Main {
     public static void main(String[] args) {
-        WordleFactory wordleFactory = new WordleFactory();
-        UserInterface userInterface = wordleFactory.createApp();
+        ApplicationContext context = new AnnotationConfigApplicationContext(ConfigurationContext.class);
+        UserInterface userInterface = context.getBean(UserInterface.class);
         userInterface.runGame();
     }
 }

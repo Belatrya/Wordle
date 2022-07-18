@@ -1,6 +1,7 @@
 package model;
 
 import model.exceptions.DictionaryIsNotFoundException;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -12,13 +13,17 @@ import java.util.Scanner;
  * Represents a storage to get access to the dictionary file.
  * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
+@Repository
 public class DictionaryFileStorage implements Dictionary {
     private Path dictionaryPath;
     private int wordsCount;
     private static final String EMPTY_FILE_EXCEPTION = "The dictionary file is empty!";
 
-    public DictionaryFileStorage(DictionaryType type) throws DictionaryIsNotFoundException {
-        dictionaryPath = Path.of(type.getPath());
+    public DictionaryFileStorage() {
+    }
+
+    public DictionaryFileStorage(String path) throws DictionaryIsNotFoundException {
+        dictionaryPath = Path.of(path);
 
         int wordsCount = countWords();
         if (wordsCount != 0) {

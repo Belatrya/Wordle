@@ -3,6 +3,9 @@ package view;
 import base.Checker;
 import base.Game;
 import model.exceptions.DictionaryIsNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.Console;
 import java.util.Scanner;
@@ -10,6 +13,7 @@ import java.util.Scanner;
 /**
  * Represents a dialog with the user.
  */
+@Service
 public class UserInterface {
     private static final String GREETING_USER = "Welcome to the game Wordle!";
     private static final String ASK_TO_TYPE_WORD = "Please type a word and tap enter";
@@ -37,6 +41,7 @@ public class UserInterface {
     private Game game;
     private Checker checker;
 
+    @Autowired
     public UserInterface(Game game, Checker checker) {
         this.game = game;
         this.checker = checker;

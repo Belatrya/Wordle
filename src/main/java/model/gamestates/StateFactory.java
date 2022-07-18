@@ -1,8 +1,11 @@
 package model.gamestates;
 
+import org.springframework.stereotype.Component;
+
 /**
  * Creates the states for the game.
  */
+@Component
 public class StateFactory {
     public State createStateWon() {
         return new Won();

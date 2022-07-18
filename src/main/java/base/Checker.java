@@ -1,14 +1,17 @@
 package base;
 
 import model.Dictionary;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 
 /**
  * Represents checks for words.
  */
+@Controller
 public class Checker {
     private Dictionary allWordDictionary;
 
-    public Checker(Dictionary allWordDictionary) {
+    public Checker(@Value("#{allWordsDictionary}") Dictionary allWordDictionary) {
         this.allWordDictionary = allWordDictionary;
     }
 
