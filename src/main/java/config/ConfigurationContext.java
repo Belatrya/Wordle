@@ -16,13 +16,13 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("application.properties")
 public class ConfigurationContext {
     @Bean
-    @Value("${allwordspath}")
+    @Value("${all.words.path}")
     Dictionary allWordsDictionary(String path) {
         return new DictionaryFileStorage(path);
     }
 
     @Bean
-    @Value("${hiddenwordspath}")
+    @Value("${hidden.words.path}")
     Dictionary hiddenWordsDictionary(String path) {
         return new DictionaryFileStorage(path);
     }
