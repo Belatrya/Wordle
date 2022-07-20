@@ -8,4 +8,5 @@ If your word doesn't equal to the hidden, there will be description for every le
  - WRONG - letter doesn't exist in the hidden word
  - NOT REALLY - letter exists but not on the right place
  - CORRECT - letter exists and is on the right place
+ 
 Let's start and good luck!
