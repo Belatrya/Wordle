@@ -1,13 +1,13 @@
-package com.belatry.base;
+package base;
 
 import lombok.Getter;
 import lombok.Setter;
-import com.belatry.model.Dictionary;
-import com.belatry.model.exceptions.DictionaryIsNotFoundException;
-import com.belatry.model.gamestates.InProcess;
-import com.belatry.model.gamestates.Lost;
-import com.belatry.model.gamestates.State;
-import com.belatry.model.gamestates.Won;
+import model.Dictionary;
+import model.exceptions.DictionaryIsNotFoundException;
+import model.gamestates.InProcess;
+import model.gamestates.Lost;
+import model.gamestates.State;
+import model.gamestates.Won;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

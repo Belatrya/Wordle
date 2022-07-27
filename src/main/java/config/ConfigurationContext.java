@@ -1,8 +1,8 @@
-package com.belatry.config;
+package config;
 
 import lombok.AllArgsConstructor;
-import com.belatry.model.Dictionary;
-import com.belatry.model.DictionaryFileStorage;
+import model.Dictionary;
+import model.DictionaryFileStorage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
  * Represents spring configuration.
  */
 @Configuration
-@ComponentScan("com.belatry")
+@ComponentScan({"base", "model", "controller"})
 @PropertySource("classpath:application.properties")
 @EnableWebMvc
 @AllArgsConstructor

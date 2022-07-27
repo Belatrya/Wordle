@@ -1,7 +1,7 @@
-package com.belatry.controller;
+package controller;
 
-import com.belatry.base.Checker;
-import com.belatry.base.Game;
+import base.Checker;
+import base.Game;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class WordleController {
     /**
      * Returns the main Wordle page to start the game.
      *
-     * @param model the com.belatry.model to sent on the view.
+     * @param model the model to sent on the view.
      * @return the main Wordle page to start the game.
      */
     @GetMapping("/wordle")
@@ -47,7 +47,7 @@ public class WordleController {
      * Returns the Wordle page after checking the user word.
      *
      * @param userWord word to check on.
-     * @param model the com.belatry.model to sent on the view.
+     * @param model the model to sent on the view.
      * @return the Wordle page with results of checking user's word.
      */
     @GetMapping("/checkword")

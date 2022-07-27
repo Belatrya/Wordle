@@ -1,6 +1,6 @@
-package com.belatry.model.gamestates;
+package model.gamestates;
 
-import com.belatry.base.Game;
+import base.Game;
 
 /**
  * Represents states for the game.

@@ -1,7 +1,7 @@
-package com.belatry.model;
+package model;
 
 import lombok.Getter;
-import com.belatry.model.exceptions.DictionaryIsNotFoundException;
+import model.exceptions.DictionaryIsNotFoundException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
