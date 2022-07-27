@@ -1,4 +1,4 @@
-package model.exceptions;
+package com.belatry.model.exceptions;
 
 /**
  * Indicates conditions when the dictionary with existing words is not found and there is no reason to proceed the Game.

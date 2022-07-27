@@ -1,4 +1,4 @@
-package model;
+package com.belatry.model;
 
 import java.util.Optional;
 
