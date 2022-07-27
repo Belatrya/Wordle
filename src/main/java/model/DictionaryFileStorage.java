@@ -4,7 +4,6 @@ import lombok.Getter;
 import model.exceptions.DictionaryIsNotFoundException;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -21,7 +20,7 @@ public class DictionaryFileStorage implements Dictionary {
     private int wordsCount;
     private static final String EMPTY_FILE_EXCEPTION = "The dictionary file is empty!";
 
-    public DictionaryFileStorage(URI path) throws DictionaryIsNotFoundException {
+    public DictionaryFileStorage(String path) throws DictionaryIsNotFoundException {
         dictionaryPath = Path.of(path);
 
         int wordsCount = countWords();
