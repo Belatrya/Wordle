@@ -3,15 +3,19 @@ package base;
 import lombok.Getter;
 import lombok.Setter;
 import model.Dictionary;
+import model.Word;
 import model.exceptions.DictionaryIsNotFoundException;
 import model.gamestates.InProcess;
 import model.gamestates.Lost;
 import model.gamestates.State;
 import model.gamestates.Won;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,18 +31,31 @@ public class Game {
     private int currentRound;
     private Dictionary hiddenWordDictionary;
     private static final String CREATING_HIDDEN_WORD_EXCEPTION = "Failed the attempt to create hidden word.";
-    @Getter @Setter
+    @Getter
+    @Setter
     private State gameState;
-    @Autowired @Getter
+    @Autowired
+    @Getter
     private Won won;
-    @Autowired @Getter
+    @Autowired
+    @Getter
     private Lost lost;
+    @Getter
+    private List<Word> userWordsHistory;
+    @Autowired
+    private Word userWord;
+    
+    @Lookup
+    public Word getUserWord() {
+        return null;
+    }
 
     public Game(@Qualifier("hiddenWordsDictionary") Dictionary hiddenWordDictionary, InProcess initialState) {
         this.hiddenWordDictionary = hiddenWordDictionary;
         hiddenWord = createHiddenWord();
         currentRound = 1;
         setGameState(initialState);
+        userWordsHistory = new ArrayList<>();
     }
 
     public int getGameRuleCountOfRounds() {
@@ -85,5 +102,17 @@ public class Game {
         } else if (!doesUserHaveGameTries()) {
             setGameState(getLost());
         }
+    }
+
+    /**
+     * Adds the user's word to the game history.
+     *
+     * @param userWordValue user word to add in the history.
+     */
+    public void addUserWordToHistory(String userWordValue) {
+        Word userWord = getUserWord();
+        userWord.setValue(userWordValue);
+        userWord.setComparingFlagForLetters(getHiddenWord());
+        getUserWordsHistory().add(userWord);
     }
 }

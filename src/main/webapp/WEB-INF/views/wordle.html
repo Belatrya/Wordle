@@ -18,13 +18,13 @@
 
 <table style="margin-left:auto;margin-right:auto;">
     <tr>
-        <th th:if="${userWords}">Your words</th>
+        <th th:unless="${game.getUserWordsHistory().isEmpty()}">Your words</th>
     </tr>
-    <tr th:each="word,iterStat : ${userWords}">
+    <tr th:each="word : ${game.getUserWordsHistory()}">
         <td>
             <table>
                 <tr>
-                    <td th:each="letter,iterStat : ${word.getLetters()}">
+                    <td th:each="letter : ${word.getLetters()}">
                         <b th:if="${letter.isCorrect()}" th:text="${letter.getValue()}" style="color:MediumSeaGreen;"/>
                         <b th:if="${letter.isNotOnTheRightPlace()}" th:text="${letter.getValue()}" style="color:Orange;"/>
                         <b th:if="${!letter.isCorrect() and !letter.isNotOnTheRightPlace()}" th:text="${letter.getValue()}" style="color:Tomato;"/>
