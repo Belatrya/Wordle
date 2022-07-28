@@ -1,4 +1,4 @@
-package config;
+package com.belatry.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

@@ -1,7 +1,7 @@
-package controller;
+package com.belatry.controller;
 
-import base.Checker;
-import base.Game;
+import com.belatry.base.Checker;
+import com.belatry.base.Game;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
