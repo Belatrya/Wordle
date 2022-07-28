@@ -1,6 +1,6 @@
-package model;
+package com.belatry.model;
 
-import base.Checker;
+import com.belatry.base.Checker;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

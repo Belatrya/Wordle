@@ -1,6 +1,6 @@
-package base;
+package com.belatry.base;
 
-import model.Dictionary;
+import com.belatry.model.Dictionary;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
