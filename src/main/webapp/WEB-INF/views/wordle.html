@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en,ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Wordle</title>
+</head>
+<h1 style="text-align:center;">Wordle</h1>
+<body style="text-align:center;">
+<p>Welcome to the game Wordle!</p>
+
+<p th:text="|There is the hidden russian word from 5 letters, you will have ${game.getGameRuleCountOfRounds()} rounds to guess it.|">
+<p>Every round you will need to type 1 existing word.</p>
+<p>If your word doesn't equal to the hidden, there will be your word by letters in the colors as described below:</p>
+<p style="color:Tomato;">letter doesn't exist in the hidden word</p>
+<p style="color:Orange;">letter exists but not on the right place</p>
+<p style="color:MediumSeaGreen;">letter exists and is on the right place</p>
+<p>Let's start and good luck!</p>
+
+<table style="margin-left:auto;margin-right:auto;">
+    <tr>
+        <th th:unless="${game.getUserWordsHistory().isEmpty()}">Your words</th>
+    </tr>
+    <tr th:each="word : ${game.getUserWordsHistory()}">
+        <td>
+            <table>
+                <tr>
+                    <td th:each="letter : ${word.getLetters()}">
+                        <b th:if="${letter.getLetterComparingStatus().name() eq 'CORRECT_VALUE_AND_PLACE'}"
+                           th:text="${letter.getValue()}" style="color:MediumSeaGreen;"/>
+                        <b th:if="${letter.getLetterComparingStatus().name() eq 'CORRECT_VALUE'}"
+                           th:text="${letter.getValue()}" style="color:Orange;"/>
+                        <b th:if="${letter.getLetterComparingStatus().name() eq 'INCORRECT'}"
+                           th:text="${letter.getValue()}" style="color:Tomato;"/>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<div th:switch="${game.getGameState().isGameEnd()}">
+
+    <div th:case="true">
+        <div th:switch="${game.getGameState().isGameWon()}">
+            <p th:case="true">Congratulations you are the winner!</p>
+            <p th:case="false" th:text="|Sorry you lost the game. The hidden word was ${game.getHiddenWord()}|"></p>
+        </div>
+    </div>
+
+    <div th:case="false">
+        <form th:action="@{/checkword}">
+            <input type="text" th:name="userWord" placeholder="слово" autofocus/>
+            <input type="submit" value="Check word"/>
+            <p th:if="${wordNotExist}">word doesn't exist!</p>
+        </form>
+    </div>
+</div>
+</body>
+</html>
