@@ -39,10 +39,12 @@ public class Word {
 
             if (checker.isLetterExistInTheHiddenWord(letter.value, hiddenWord)) {
                 if (checker.isLetterOnTheRightPlace(i, hiddenWord, value)) {
-                    letter.setCorrect(true);
+                    letter.setLetterComparingStatus(LetterComparingStatus.CORRECT_VALUE_AND_PLACE);
                 } else {
-                    letter.setNotOnTheRightPlace(true);
+                    letter.setLetterComparingStatus(LetterComparingStatus.CORRECT_VALUE);
                 }
+            } else {
+                letter.setLetterComparingStatus(LetterComparingStatus.INCORRECT);
             }
             getLetters().add(letter);
         }
@@ -56,7 +58,13 @@ public class Word {
     static class Letter {
         @NonNull
         private char value;
-        private boolean correct;
-        private boolean notOnTheRightPlace;
+        private LetterComparingStatus letterComparingStatus;
+    }
+
+    /**
+     * Represents letter's value and place in comparing to the letters in the hidden word.
+     */
+    enum LetterComparingStatus {
+        CORRECT_VALUE_AND_PLACE, CORRECT_VALUE, INCORRECT;
     }
 }

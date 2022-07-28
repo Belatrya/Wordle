@@ -25,9 +25,12 @@
             <table>
                 <tr>
                     <td th:each="letter : ${word.getLetters()}">
-                        <b th:if="${letter.isCorrect()}" th:text="${letter.getValue()}" style="color:MediumSeaGreen;"/>
-                        <b th:if="${letter.isNotOnTheRightPlace()}" th:text="${letter.getValue()}" style="color:Orange;"/>
-                        <b th:if="${!letter.isCorrect() and !letter.isNotOnTheRightPlace()}" th:text="${letter.getValue()}" style="color:Tomato;"/>
+                        <b th:if="${letter.getLetterComparingStatus().name() eq 'CORRECT_VALUE_AND_PLACE'}"
+                           th:text="${letter.getValue()}" style="color:MediumSeaGreen;"/>
+                        <b th:if="${letter.getLetterComparingStatus().name() eq 'CORRECT_VALUE'}"
+                           th:text="${letter.getValue()}" style="color:Orange;"/>
+                        <b th:if="${letter.getLetterComparingStatus().name() eq 'INCORRECT'}"
+                           th:text="${letter.getValue()}" style="color:Tomato;"/>
                     </td>
                 </tr>
             </table>
