@@ -2,9 +2,10 @@ package controller;
 
 import base.Checker;
 import base.Game;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Represents a dialog with the user.
  */
 @Controller
-@Data
 @RequiredArgsConstructor
 public class WordleController {
     @NonNull
+    @Getter
+    @Setter
     private Game game;
     @NonNull
+    @Getter
+    @Setter
     private Checker checker;
-
-    private String getHiddenWord() {
-        return game.getHiddenWord();
-    }
 
     /**
      * Returns the main Wordle page to start the game.
@@ -53,7 +53,7 @@ public class WordleController {
             model.addAttribute("wordNotExist", !checker.isUserWordExists(userWord));
         } else {
             if (!game.getGameState().isGameEnd()) {
-                game.playRound(checker.isHiddenEqualsToUserWord(getHiddenWord(), userWord));
+                game.playRound(checker.isHiddenEqualsToUserWord(game.getHiddenWord(), userWord));
 
                 game.addUserWordToHistory(userWord);
             }

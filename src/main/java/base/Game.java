@@ -44,7 +44,7 @@ public class Game {
     private List<Word> userWordsHistory;
     @Autowired
     private Word userWord;
-    
+
     @Lookup
     public Word getUserWord() {
         return null;

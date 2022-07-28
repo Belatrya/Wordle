@@ -46,9 +46,9 @@
 
     <div th:case="false">
         <form th:action="@{/checkword}">
-            <input type="text" th:name="userWord" placeholder="слово"/>
+            <input type="text" th:name="userWord" placeholder="слово" autofocus/>
             <input type="submit" value="Check word"/>
-            <span th:if="${wordNotExist}">word doesn't exist!</span>
+            <p th:if="${wordNotExist}">word doesn't exist!</p>
         </form>
     </div>
 </div>
