@@ -1,11 +1,17 @@
 package com.belatry.model;
 
-import lombok.Getter;
 import com.belatry.model.exceptions.DictionaryIsNotFoundException;
+import lombok.Getter;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -87,5 +93,67 @@ public class DictionaryFileStorage implements Dictionary {
         }
 
         return false;
+    }
+
+    /**
+     * Returns all words in the dictionary.
+     *
+     * @return all words in the dictionary.
+     */
+    @Override
+    public List<String> getAllWords() {
+        List<String> allWords = new ArrayList<>(getWordsCount());
+        for (int i = 1; i <= getWordsCount(); i++) {
+            allWords.add(getWord(i).get());
+        }
+        return allWords;
+    }
+
+    /**
+     * Adds the word to the end of the file if the word doesn't exist yet.
+     *
+     * @param word to add.
+     */
+    @Override
+    public void add(String word) {
+        if ((!word.isEmpty()) && (!isExists(word))) {
+            try (Writer writer = new FileWriter(getDictionaryPath().toAbsolutePath().toString(), StandardCharsets.UTF_8,
+                    true)) {
+                writer.append(word.toUpperCase());
+                writer.append(System.lineSeparator());
+            } catch (IOException e) {
+                throw new DictionaryIsNotFoundException();
+            }
+        }
+    }
+
+    /**
+     * Deletes the word from the dictionary if it exists.
+     *
+     * @param word to delete.
+     */
+    @Override
+    public void delete(String word) {
+        String tempFileName = String.format("%s\\TMP%s", getDictionaryPath().getParent(),
+                getDictionaryPath().getFileName());
+        Path tempFilePath = Path.of(tempFileName);
+        try (Scanner scanner = new Scanner(getDictionaryPath(), StandardCharsets.UTF_8);
+             Writer writer = new FileWriter(tempFileName, StandardCharsets.UTF_8)) {
+            String line;
+            while (scanner.hasNextLine()) {
+                line = scanner.nextLine();
+                if (!word.equalsIgnoreCase(line)) {
+                    writer.write(line.toUpperCase());
+                    writer.write(System.lineSeparator());
+                }
+            }
+        } catch (IOException e) {
+            throw new DictionaryIsNotFoundException();
+        }
+        try {
+            Files.move(tempFilePath, getDictionaryPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new DictionaryIsNotFoundException();
+        }
     }
 }

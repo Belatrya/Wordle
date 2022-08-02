@@ -1,5 +1,6 @@
 package com.belatry.model;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,4 +29,25 @@ public interface Dictionary {
      * @return true if the dictionary contains the parameter word, false otherwise.
      */
     boolean isExists(String word);
+
+    /**
+     * Returns all words in the dictionary.
+     *
+     * @return all words in the dictionary.
+     */
+    List<String> getAllWords();
+
+    /**
+     * Adds the word in the dictionary.
+     *
+     * @param word to add.
+     */
+    void add(String word);
+
+    /**
+     * Deletes the word from the dictionary.
+     *
+     * @param word to delete.
+     */
+    void delete(String word);
 }
