@@ -103,8 +103,12 @@ public class DictionaryFileStorage implements Dictionary {
     @Override
     public List<String> getAllWords() {
         List<String> allWords = new ArrayList<>(getWordsCount());
-        for (int i = 1; i <= getWordsCount(); i++) {
-            allWords.add(getWord(i).get());
+        try (Scanner scanner = new Scanner(getDictionaryPath(), StandardCharsets.UTF_8)) {
+            while (scanner.hasNext()) {
+                allWords.add(scanner.nextLine());
+            }
+        } catch (IOException e) {
+            throw new DictionaryIsNotFoundException();
         }
         return allWords;
     }
