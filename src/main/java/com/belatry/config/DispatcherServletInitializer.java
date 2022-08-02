@@ -31,7 +31,6 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding(StandardCharsets.UTF_8.name());
         characterEncodingFilter.setForceEncoding(true);
-        Filter hiddenHttpMethodFilter = new HiddenHttpMethodFilter();
-        return new Filter[]{characterEncodingFilter, hiddenHttpMethodFilter};
+        return new Filter[]{characterEncodingFilter};
     }
 }
