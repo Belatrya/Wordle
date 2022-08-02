@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dictionary")
+@RequestMapping("/api/v1/dictionary")
 public class DictionaryController {
     private Dictionary dictionary;
 
