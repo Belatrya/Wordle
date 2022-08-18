@@ -1,7 +1,10 @@
 package com.belatry.model;
 
 import com.belatry.base.Checker;
+import com.belatry.model.exceptions.WordDoesNotExistException;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
@@ -12,18 +15,22 @@ import java.util.List;
 /**
  * Represents a word from one user's try to guess the hidden. It consists of letters.
  */
-@Data
 @Component
 @RequiredArgsConstructor
 @Scope("prototype")
 public class Word {
+    @Getter
     private String value;
     @NonNull
+    @Getter
     private List<Letter> letters;
     @NonNull
     private Checker checker;
 
-    public void setValue(String value) {
+    public void setValueForExistingWord(String value) {
+        if (!checker.isUserWordExists(value)) {
+            throw new WordDoesNotExistException(value);
+        }
         this.value = value.toUpperCase();
     }
 
@@ -46,7 +53,7 @@ public class Word {
             } else {
                 letter.setLetterComparingStatus(LetterComparingStatus.INCORRECT);
             }
-            getLetters().add(letter);
+            letters.add(letter);
         }
     }
 
@@ -54,7 +61,6 @@ public class Word {
      * The class to store letters with parameters which depend on the hidden word letters.
      */
     @Data
-    @RequiredArgsConstructor
     static class Letter {
         @NonNull
         private char value;

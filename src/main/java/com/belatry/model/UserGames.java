@@ -1,33 +1,65 @@
 package com.belatry.model;
 
 import com.belatry.base.UserGameService;
-import lombok.Data;
+import com.belatry.model.exceptions.GameIsNotFoundException;
+import com.belatry.model.gamestates.GameState;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+
 @Component
-@Data
+@AllArgsConstructor
 public class UserGames implements UserGameService {
-    private final Map<String, String> userGames;
-    private final Map<String, Integer> userRounds;
+    private Map<String, String> userGameHiddenWord;
+    private Map<String, Integer> userGameRound;
+    private Map<String, GameState> userGameState;
 
-    @Override
-    public void addUserGame(String userName, String hiddenWord) {
-        userGames.put(userName, hiddenWord);
+    public void checkUserGameExist(String userId) {
+        if (!isUserGameExist(userId)) {
+            throw new GameIsNotFoundException();
+        }
     }
 
     @Override
-    public String getHiddenWord(String userName) {
-        return userGames.get(userName);
+    public void addUserGame(String userId, String hiddenWord) {
+        userGameHiddenWord.put(userId, hiddenWord);
+        setCurrentRound(userId, 1);
+        setUserGameState(userId, GameState.IN_PROCESS);
     }
 
     @Override
-    public boolean isUserGameExist(String userName) {
-        return userGames.containsKey(userName);
+    public String getHiddenWord(String userId) {
+        checkUserGameExist(userId);
+        return userGameHiddenWord.get(userId);
     }
 
     @Override
-    public int getCurrentRound(String userName) {
-        return userRounds.get(userName);
+    public boolean isUserGameExist(String userId) {
+        return userGameHiddenWord.containsKey(userId);
+    }
+
+    @Override
+    public int getCurrentRound(String userId) {
+        checkUserGameExist(userId);
+        return userGameRound.get(userId);
+    }
+
+    @Override
+    public void setCurrentRound(String userId, int roundNumber) {
+        checkUserGameExist(userId);
+        userGameRound.put(userId, roundNumber);
+    }
+
+    @Override
+    public GameState getUserGameState(String userId) {
+        checkUserGameExist(userId);
+        return userGameState.get(userId);
+    }
+
+    @Override
+    public void setUserGameState(String userId, GameState gameState) {
+        checkUserGameExist(userId);
+        userGameState.put(userId, gameState);
     }
 }
