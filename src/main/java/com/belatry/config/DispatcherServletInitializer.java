@@ -1,7 +1,6 @@
 package com.belatry.config;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
@@ -31,8 +30,6 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding(StandardCharsets.UTF_8.name());
         characterEncodingFilter.setForceEncoding(true);
-
-        DelegatingFilterProxy sessionFilterProxy = new DelegatingFilterProxy("sessionFilter");
-        return new Filter[]{characterEncodingFilter, sessionFilterProxy};
+        return new Filter[]{characterEncodingFilter};
     }
 }
