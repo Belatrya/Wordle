@@ -53,7 +53,7 @@ public class Word {
             } else {
                 letter.setLetterComparingStatus(LetterComparingStatus.INCORRECT);
             }
-            letters.add(letter);
+            getLetters().add(letter);
         }
     }
 
