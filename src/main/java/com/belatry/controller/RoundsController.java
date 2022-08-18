@@ -50,7 +50,7 @@ public class RoundsController {
 
                 if (checker.isHiddenEqualsToUserWord(hiddenWord, userWord)) {
                     userGames.setUserGameState(userId, GameState.WON);
-                } else if (currentRound++ > game.getGameRuleCountOfRounds()) {
+                } else if (currentRound++ >= game.getGameRuleCountOfRounds()) {
                     userGames.setUserGameState(userId, GameState.LOST);
                 }
                 userGames.setCurrentRound(userId, currentRound);
