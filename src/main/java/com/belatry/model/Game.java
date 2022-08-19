@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 /**
- * Represents a Wordle game exemplar.
+ * Represents a Wordle game rules.
  * Throws DictionaryIsNotFoundException in case any issues with the dictionary.
  */
 @Component
@@ -24,6 +24,11 @@ public class Game {
         return GAME_RULE_COUNT_OF_ROUNDS;
     }
 
+    /**
+     * Returns the random word from the dictionary as the hidden.
+     *
+     * @return the hidden word for the game.
+     */
     public String createHiddenWord() {
         int randomIndex = (int) (Math.random() * hiddenWordDictionary.getWordsCount());
 

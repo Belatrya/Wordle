@@ -2,7 +2,6 @@ package com.belatry.model;
 
 import com.belatry.base.Checker;
 import com.belatry.model.exceptions.WordDoesNotExistException;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
@@ -14,6 +13,7 @@ import java.util.List;
 
 /**
  * Represents a word from one user's try to guess the hidden. It consists of letters.
+ * Throws WordDoesNotExistException if the word doesn't exist in the game dictionary.
  */
 @Component
 @RequiredArgsConstructor
@@ -27,6 +27,12 @@ public class Word {
     @NonNull
     private Checker checker;
 
+    /**
+     * Sets the value for the word if the word exists in the game dictionary.
+     * Throws WordDoesNotExistException if the word doesn't exist.
+     *
+     * @param value the user's word value.
+     */
     public void setValueForExistingWord(String value) {
         if (!checker.isUserWordExists(value)) {
             throw new WordDoesNotExistException(value);
