@@ -8,6 +8,11 @@ import com.belatry.model.exceptions.DictionaryIsNotFoundException;
 import com.belatry.model.exceptions.GameIsNotFoundException;
 import com.belatry.model.exceptions.WordDoesNotExistException;
 import com.belatry.model.gamestates.GameState;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.http.HttpStatus;
@@ -19,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * Represents the user's try to guess the hidden word.
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/rounds")
@@ -34,6 +42,15 @@ public class RoundsController {
         return null;
     }
 
+    @Operation(summary = "Returns the user's word described by letters in comparison with the hidden.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "returns the user's word described by letters in comparison with the hidden.",
+                    content = @Content(schema = @Schema(implementation = Word.class))),
+            @ApiResponse(responseCode = "422",
+                    description = "impossible to play round due to the game is already over or the word doesn't exist"),
+            @ApiResponse(responseCode = "500",
+                    description = "impossible to play round due to errors with the game or dictionary")})
     @GetMapping(value = "/play", produces = "application/json")
     public ResponseEntity<?> playRound(HttpSession session, @RequestParam String userWord) {
         String userId = session.getId();
@@ -56,9 +73,11 @@ public class RoundsController {
                 userGames.setCurrentRound(userId, currentRound);
                 return ResponseEntity.ok(word);
             }
-            return ResponseEntity.internalServerError().body(YOUR_GAME_ALREADY_OVER);
-        } catch (DictionaryIsNotFoundException | GameIsNotFoundException | WordDoesNotExistException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(YOUR_GAME_ALREADY_OVER);
+        } catch (WordDoesNotExistException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
+        } catch (DictionaryIsNotFoundException | GameIsNotFoundException e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }
