@@ -36,7 +36,7 @@ public class DictionaryController {
     @Operation(summary = "Returns all words from the dictionary")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "all words from the dictionary",
             content = @Content(schema = @Schema(implementation = List.class)))})
-    @GetMapping("/allWords")
+    @GetMapping("/all-words")
     public ResponseEntity<?> showDictionary() {
         return ResponseEntity.ok(dictionary.getAllWords());
     }

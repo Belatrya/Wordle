@@ -25,7 +25,7 @@ public class GamesController {
 
     @Operation(summary = "Starts new game and save it in the storage")
     @ApiResponses({@ApiResponse(responseCode = "201", description = "the game is created")})
-    @PostMapping("/startnew")
+    @PostMapping("/start-new")
     public ResponseEntity<?> startNewGame(HttpSession session) {
         userGames.addUserGame(session.getId(), game.createHiddenWord());
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -34,7 +34,7 @@ public class GamesController {
     @Operation(summary = "Returns the hidden word for the current user's game")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "the hidden word"),
             @ApiResponse(responseCode = "404", description = "the game was not found")})
-    @GetMapping(value = "/game/hiddenWord", produces = "text/plain;charset=UTF-8")
+    @GetMapping(value = "/game/hidden-word", produces = "text/plain;charset=UTF-8")
     public ResponseEntity<String> getHiddenWord(HttpSession session) {
         try {
             return ResponseEntity.ok(userGames.getHiddenWord(session.getId()));
@@ -58,7 +58,7 @@ public class GamesController {
     @Operation(summary = "Returns the round number for the current user's game")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "the game round number"),
             @ApiResponse(responseCode = "404", description = "the game was not found")})
-    @GetMapping(value = "/game/currentRound")
+    @GetMapping(value = "/game/current-round")
     public ResponseEntity<?> getGameRoundNumber(HttpSession session) {
         try {
             return ResponseEntity.ok(userGames.getCurrentRound(session.getId()));
