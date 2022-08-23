@@ -1,7 +1,7 @@
 package com.belatry.controller;
 
+import com.belatry.base.UserGameService;
 import com.belatry.model.Game;
-import com.belatry.model.UserGames;
 import com.belatry.model.exceptions.GameIsNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/api/v1/games")
 public class GamesController {
     private Game game;
-    private UserGames userGames;
+    private UserGameService userGames;
 
     @Operation(summary = "Starts new game and save it in the storage")
     @ApiResponses({@ApiResponse(responseCode = "201", description = "the game is created")})

@@ -1,8 +1,8 @@
 package com.belatry.controller;
 
 import com.belatry.base.Checker;
+import com.belatry.base.UserGameService;
 import com.belatry.model.Game;
-import com.belatry.model.UserGames;
 import com.belatry.model.Word;
 import com.belatry.model.exceptions.DictionaryIsNotFoundException;
 import com.belatry.model.exceptions.GameIsNotFoundException;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
 @AllArgsConstructor
 @RequestMapping("/api/v1/rounds")
 public class RoundsController {
-    private UserGames userGames;
+    private UserGameService userGames;
     private Checker checker;
     private Game game;
     private Word userWord;
@@ -61,7 +61,6 @@ public class RoundsController {
                 String hiddenWord = userGames.getHiddenWord(userId);
                 int currentRound = userGames.getCurrentRound(userId);
 
-                userGames.checkUserGameExist(userId);
                 word.setValueForExistingWord(userWord);
                 word.setComparingFlagForLetters(hiddenWord);
 
