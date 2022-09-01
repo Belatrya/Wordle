@@ -1,7 +1,5 @@
 @echo off
 
-set CATALINA_HOME=%1
-
 if exist "%CATALINA_HOME%\bin\catalina.bat" (
 	call mvn clean package >nul
 
@@ -12,7 +10,8 @@ if exist "%CATALINA_HOME%\bin\catalina.bat" (
 	call catalina.bat run
 	
 ) else (
-	echo The Tomcat directory is not defined correctly, please specify it as the first parameter for the "run.bat"
+	echo The CATALINA_HOME environment variable is not defined correctly
+	echo This environment variable is needed to run this program
 )
 
 pause
