@@ -1,6 +1,6 @@
 package com.belatry.controller;
 
-import com.belatry.base.UserGameService;
+import com.belatry.base.dao.UserGameService;
 import com.belatry.model.Game;
 import com.belatry.model.exceptions.GameIsNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
