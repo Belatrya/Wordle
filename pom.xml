@@ -90,7 +90,8 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <propertyFile>src/main/resources/application.properties</propertyFile>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <propertyFile>${profile.propertyFile}</propertyFile>
                 </configuration>
                 <executions>
                     <execution>
@@ -103,6 +104,35 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <!-- Development settings, -Denv=dev -->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <profile.propertyFile>src\main\resources\db\profile\dev\liquibase.properties</profile.propertyFile>
+                <profile.logging>debug</profile.logging>
+            </properties>
+        </profile>
+        <!-- Test settings, -Denv=test -->
+        <profile>
+            <id>test</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>test</value>
+                </property>
+            </activation>
+            <properties>
+                <profile.propertyFile>src\main\resources\db\profile\test\liquibase.properties</profile.propertyFile>
+            </properties>
+        </profile>
+    </profiles>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
