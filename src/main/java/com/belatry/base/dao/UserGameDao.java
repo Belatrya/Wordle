@@ -1,32 +1,32 @@
-package com.belatry.model;
+package com.belatry.base.dao;
 
-import com.belatry.base.UserGameService;
+import com.belatry.model.dto.UserGameDto;
 import com.belatry.model.exceptions.GameIsNotFoundException;
 import com.belatry.model.gamestates.GameState;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
-
-import java.util.Map;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
- * Represents the storage for the user's games.
+ * Represents the DAO for user's games.
  * Throws GameIsNotFoundException if the game for specified user doesn't exist.
  */
-@Component
 @AllArgsConstructor
-public class UserGames implements UserGameService {
-    private Map<String, String> userGameHiddenWord;
-    private Map<String, Integer> userGameRound;
-    private Map<String, GameState> userGameState;
+@Repository
+public class UserGameDao implements UserGameService {
+    private JdbcTemplate jdbcTemplate;
 
-    /**
-     * Searches for the game for specified user.
-     * Throws GameIsNotFoundException if it doesn't exist.
-     *
-     * @param userId unique user's identifier.
-     */
-    public void checkUserGameExist(String userId) {
-        if (!isUserGameExist(userId)) {
+    private UserGameDto getGameByUserId(String userId) {
+        return jdbcTemplate.query("SELECT userid, hiddenword, round, gamestate FROM usergames WHERE userid = ?",
+                new BeanPropertyRowMapper<>(UserGameDto.class), userId).stream().findFirst().orElse(null);
+    }
+
+    private UserGameDto getUserGameIfExist(String userId) {
+        UserGameDto game = getGameByUserId(userId);
+        if (game != null) {
+            return game;
+        } else {
             throw new GameIsNotFoundException();
         }
     }
@@ -39,9 +39,9 @@ public class UserGames implements UserGameService {
      */
     @Override
     public void addUserGame(String userId, String hiddenWord) {
-        userGameHiddenWord.put(userId, hiddenWord);
-        setCurrentRound(userId, 1);
-        setUserGameState(userId, GameState.IN_PROCESS);
+        UserGameDto game = new UserGameDto(userId, hiddenWord, 1, GameState.IN_PROCESS);
+        jdbcTemplate.update("INSERT INTO usergames (userid, hiddenword, round, gamestate) VALUES (?, ?, ?, ?)",
+                game.getUserId(), game.getHiddenWord(), game.getRound(), game.getGameState().toString());
     }
 
     /**
@@ -52,8 +52,7 @@ public class UserGames implements UserGameService {
      */
     @Override
     public String getHiddenWord(String userId) {
-        checkUserGameExist(userId);
-        return userGameHiddenWord.get(userId);
+        return getUserGameIfExist(userId).getHiddenWord();
     }
 
     /**
@@ -64,7 +63,7 @@ public class UserGames implements UserGameService {
      */
     @Override
     public boolean isUserGameExist(String userId) {
-        return userGameHiddenWord.containsKey(userId);
+        return getGameByUserId(userId) != null;
     }
 
     /**
@@ -75,8 +74,7 @@ public class UserGames implements UserGameService {
      */
     @Override
     public int getCurrentRound(String userId) {
-        checkUserGameExist(userId);
-        return userGameRound.get(userId);
+        return getUserGameIfExist(userId).getRound();
     }
 
     /**
@@ -87,8 +85,8 @@ public class UserGames implements UserGameService {
      */
     @Override
     public void setCurrentRound(String userId, int roundNumber) {
-        checkUserGameExist(userId);
-        userGameRound.put(userId, roundNumber);
+        getUserGameIfExist(userId);
+        jdbcTemplate.update("UPDATE usergames SET round = ? WHERE userid = ?", roundNumber, userId);
     }
 
     /**
@@ -99,8 +97,7 @@ public class UserGames implements UserGameService {
      */
     @Override
     public GameState getUserGameState(String userId) {
-        checkUserGameExist(userId);
-        return userGameState.get(userId);
+        return getUserGameIfExist(userId).getGameState();
     }
 
     /**
@@ -111,7 +108,7 @@ public class UserGames implements UserGameService {
      */
     @Override
     public void setUserGameState(String userId, GameState gameState) {
-        checkUserGameExist(userId);
-        userGameState.put(userId, gameState);
+        getUserGameIfExist(userId);
+        jdbcTemplate.update("UPDATE usergames SET gamestate = ? WHERE userid = ?", gameState.toString(), userId);
     }
 }

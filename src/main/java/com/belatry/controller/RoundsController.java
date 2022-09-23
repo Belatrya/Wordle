@@ -1,7 +1,7 @@
 package com.belatry.controller;
 
 import com.belatry.base.Checker;
-import com.belatry.base.UserGameService;
+import com.belatry.base.dao.UserGameService;
 import com.belatry.model.Game;
 import com.belatry.model.Word;
 import com.belatry.model.exceptions.DictionaryIsNotFoundException;

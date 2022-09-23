@@ -1,4 +1,4 @@
-package com.belatry.base;
+package com.belatry.base.dao;
 
 import com.belatry.model.gamestates.GameState;
 
